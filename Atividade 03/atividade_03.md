@@ -1,4 +1,4 @@
-# <center>Atividade 03 - Arrays, estruturas de decisão e de repetição, operadores e funções </center> 
+# <center>Atividade 03 </center> 
 
 **1. Crie uma função que recebe como parâmetro um número e retorna true se o número for  par e false se for ímpar.** 
 ``` ts

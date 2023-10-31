@@ -1,20 +1,26 @@
 class Postagem {
     private _id: number;
+    private _texto: string;
     private _qtdCurtidas: number;
     private _qtdDescurtidas: number;
     private _data: Date;
     private _perfil: Perfil;
 
-    constructor(_id: number, _qtdCurtidas: number, _qtdDescurtidas: number, _data: Date, _perfil: Perfil){
-        this._id = _id;
-        this._data = _data;
-        this._perfil = _perfil;
-        this._qtdCurtidas = _qtdCurtidas;
-        this._qtdDescurtidas = _qtdDescurtidas;
+    constructor(id: number, texto: string, qtdCurtidas: number, qtdDescurtidas: number, data: Date, perfil: Perfil){
+        this._id = id;
+        this._texto = texto;
+        this._data = data;
+        this._perfil = perfil;
+        this._qtdCurtidas = qtdCurtidas;
+        this._qtdDescurtidas = qtdDescurtidas;
     }
 
     get id(): number {
         return this._id;
+    }
+
+    get texto(): string {
+        return this._texto;
     }
 
     get qtdCurtidas(): number {
@@ -42,6 +48,6 @@ class Postagem {
     }
 
     ehPopular(): boolean {
-        return this._qtdCurtidas >= this._qtdDescurtidas * 1.5;
+        return this._qtdCurtidas > this._qtdDescurtidas * 1.5;
     }
 }

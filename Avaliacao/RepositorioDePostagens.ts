@@ -1,3 +1,5 @@
+import { PostagemAvancada } from "./PostagemAvancada";
+
 class RepositorioDePostagens {
     private _postagens: Postagem[] = [];
     private _postagensAvancadas: PostagemAvancada[] = [];
@@ -7,6 +9,9 @@ class RepositorioDePostagens {
         this._postagens = postagens;
     }
 
+    get lengthPostagens(): number{
+        return this._postagens.length + this._postagensAvancadas.length;
+    }
 
     adicionar(postagem: Postagem) {
         if (this._postagens.includes(postagem)) {
@@ -17,14 +22,26 @@ class RepositorioDePostagens {
         }
     }
 
-    consultarPostagem(id?: number, texto?: string, hashtag?: string, perfil?: Perfil): Postagem[]{
+    consultarPostagem(id?: number, texto?: string, hashtag?: string, perfil?: Perfil): Postagem{
         let postagemProcurada!: Postagem;
+        let postagemAvancadaProcurada!: PostagemAvancada;
         for (let postagem of this._postagens) {
             if (postagem.id == id || postagem.texto == texto || postagem.perfil == perfil) {
                 postagemProcurada = postagem;
                 break;
             }
         }
-        return postagemProcurada;
+
+        /// CORRIGIR, RETORNAR PERFIS
+
+        for (let postagemAvancada of this._postagensAvancadas) {
+            if (postagemAvancada.id == id || postagemAvancada.texto == texto || postagemAvancada.perfil == perfil) {
+                postagemAvancadaProcurada = postagemAvancada;
+                break;
+            }
+        }
+        return postagemAvancadaProcurada;
     }
 }
+
+export {RepositorioDePostagens}

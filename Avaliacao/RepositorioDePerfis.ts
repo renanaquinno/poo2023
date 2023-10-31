@@ -14,7 +14,7 @@ class RepositorioDePerfis {
         }
     }
 
-    consultarPerfil(id?: number, nome?: string, email?: string): Perfil[] {
+    consultarPerfil(id?: number, nome?: string, email?: string): Perfil {
         let perfilProcurado!: Perfil;
         for (let perfil of this._perfis) {
             if (perfil.id == id || perfil.nome == nome || perfil.email == email) {
@@ -25,4 +25,10 @@ class RepositorioDePerfis {
         return perfilProcurado;
     }
 
+    get lengthPerfis(): number{
+        return this._perfis.length;
+    }
+
 }
+
+export {RepositorioDePerfis}

@@ -1,21 +1,19 @@
 class PostagemAvancada extends Postagem{
-    hashtag: Hashtag;
-    hashtags: Hashtag[] = [];
-    visualizacoes: number;
+    private _hashtags: Hashtag[] = [];
+    private _visualizacoesRestantes: number;
 
-    constructor(id: number, qtdCurtidas: number, qtdDescurtidas: number, data: Date, perfil: Perfil, hashtag: Hashtag, hashtags: Hashtag[], visualizacoes: number){
-        super(id, qtdCurtidas, qtdDescurtidas, data, perfil);
-        this.hashtag = hashtag;
-        this.hashtags = hashtags;
-        this.visualizacoes = visualizacoes;
+    constructor(id: number, texto: string, qtdCurtidas: number, qtdDescurtidas: number, data: Date, perfil: Perfil, hashtags: Hashtag[], visualizacoesRestantes: number){
+        super(id, texto, qtdCurtidas, qtdDescurtidas, data, perfil);
+        this._hashtags = hashtags;
+        this._visualizacoesRestantes = visualizacoesRestantes;
     }
 
     adicionarHashtag(hashtag: Hashtag): void{
-        this.hashtags.push(hashtag);
+        this._hashtags.push(hashtag);
     }
 
     existeHashtag(hashtag: Hashtag): boolean {
-        for (let item of this.hashtags){
+        for (let item of this._hashtags){
             if (item === hashtag){
                 return true;
             }
@@ -25,14 +23,16 @@ class PostagemAvancada extends Postagem{
     }
 
     decrementarVisualizacoes(): void {
-        this.visualizacoes += 1;
+        this._visualizacoesRestantes -= 1;
     }
 
     visualizacoesRestantes(): number {
-        if (this.visualizacoes > 100) { //limite imposto = 100
+        if (this._visualizacoesRestantes > 100) { //limite imposto = 100
             return 0;
         } else {
-            return 100 - this.visualizacoes;
+            return 100 - this._visualizacoesRestantes;
         }
     }
 }
+
+export {PostagemAvancada}

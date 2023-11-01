@@ -1,9 +1,10 @@
-import prompt from "prompt-sync";
+//import prompt from "prompt-sync";
 import { RedeSocial } from "./RedeSocial";
 
 const input = prompt();
-const clc = require('cli-color');
+//const clc = require('cli-color');
 
+let redesocial: RedeSocial;
 class App {
     private _redeSocial: RedeSocial;
 
@@ -13,7 +14,8 @@ let opcao: String = '';
 
 do {
     console.log('\nBem vindo ao Rede Social\nDigite uma opção:');
-    console.log('1 - Cadastrar Perfil  2 - Pesquisar Perfil  3 - Cadastrar Postagem  4 - Consultar Postagem  0 - Sair\n');
+    console.log('1 - Cadastrar Perfil  2 - Pesquisar Perfil  3 - Cadastrar Postagem  4 - Consultar Postagem  \n'+
+    '5 - Postagens Populares 0 - Sair\n');
     opcao = input("Opção:");
     switch (opcao) {
         case "1":
@@ -28,11 +30,61 @@ do {
         case "4":
             PesquisarPostagem();
             break;
+        case "5":
+            PostagensPopulares();
+            break;
     }
 } while (opcao != "0");
 
 input('Loggout Realizado com Sucesso!!');
 
+
+function cadastrarPerfil(){
+    let perfil!: Perfil;
+    let id: string = input('Digite o ID: ');
+    let nome: string = input('Digite o Nome: ').toLocaleUpperCase();
+    let email: string = input('Digite o email: ').toLocaleUpperCase();
+    let postagens = [];
+    perfil = new Perfil(parseFloat(id), nome, email, postagens);
+    redesocial.incluirPerfil(perfil);
+}
+
+function PesquisarPerfil(){
+    let id: string = input('Digite o ID: ');
+    let nome: string = input('Digite o Nome: ').toLocaleUpperCase();
+    let email: string = input('Digite o Email: ').toLocaleUpperCase();
+    redesocial.consultarPerfil(parseFloat(id), nome, email);
+}
+
+
+function cadastrarPostagem(){
+    let postagem!: Postagem;
+    let id: string = input('Digite o ID: ');
+    let texto: string = input('Digite o Texto: ').toLocaleUpperCase();
+    let qtdCurtidas: number = 0;
+    let qtdDescurtidas: number = 0;
+    let data = new Date();
+    let id_perfil: string = input('Digite o Id do Perfil').toLocaleUpperCase();
+    let perfil = redesocial.consultarPerfil(parseFloat(id_perfil), null, null);
+    postagem = new Postagem(parseInt(id), texto, qtdCurtidas, qtdDescurtidas, data, perfil);
+    redesocial.incluirPostagem(postagem);
+}
+
+
+function PesquisarPostagem(){
+    let id: string = input('Digite o ID: ');
+    let texto: string = input('Digite o Texto: ').toLocaleUpperCase();
+    let hashtag: string = input('Digite a Hashtag: ').toLocaleUpperCase();
+    let id_perfil: string = input('Digite o Id do Perfil').toLocaleUpperCase();
+    
+    let perfil = redesocial.consultarPerfil(parseFloat(id_perfil), null, null);
+    redesocial.consultarPostagem(parseInt(id), texto, hashtag, perfil);
+}
+
+
+function PostagensPopulares(){
+    
+}
 
 function carregarDados(usuario: string) {
     let LineReaderSync = require("line-reader-sync");

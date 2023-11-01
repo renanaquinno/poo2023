@@ -19,8 +19,9 @@ class RedeSocial {
         return this._repositorioPerfis.consultarPerfil(id, nome, email);
     }
 
-    consultarPostagem(id: number, nome: string, email: string): Postagem{
-        return this._repositorioPosts.consultarPostagem(id, nome, email);
+
+    consultarPostagem(id: number, texto: string, hashtag: string, perfil: Perfil): Postagem{
+        return this._repositorioPosts.consultarPostagem(id, texto, hashtag, perfil);
     }
 
     consultarPerfilPorId(perfil: Perfil){

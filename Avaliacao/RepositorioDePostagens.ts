@@ -35,7 +35,7 @@ class RepositorioDePostagens {
         /// CORRIGIR, RETORNAR PERFIS
 
         for (let postagemAvancada of this._postagensAvancadas) {
-            if (postagemAvancada.id == id || postagemAvancada.texto == texto || postagemAvancada.perfil == perfil) {
+            if (postagemAvancada.id == id || postagemAvancada.texto == texto || postagemAvancada.hashtags == hashtag || postagemAvancada.perfil == perfil) {
                 postagemAvancadaProcurada = postagemAvancada;
                 break;
             }

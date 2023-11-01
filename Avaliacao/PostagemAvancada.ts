@@ -1,4 +1,4 @@
-class PostagemAvancada extends Postagem{
+class PostagemAvancada extends Postagem {
     private _hashtags: Hashtag[] = [];
     private _visualizacoesRestantes: number;
 
@@ -6,6 +6,10 @@ class PostagemAvancada extends Postagem{
         super(id, texto, qtdCurtidas, qtdDescurtidas, data, perfil);
         this._hashtags = hashtags;
         this._visualizacoesRestantes = visualizacoesRestantes;
+    }
+
+    get hashtags(): string {
+        return this.hashtags;
     }
 
     adicionarHashtag(hashtag: Hashtag): void{

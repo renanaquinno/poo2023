@@ -77,6 +77,15 @@ class RedeSocial {
             this._repositorioPosts[indiceBuscado].decrementarVisualizacoes();
         }
     }
+
+    exibirPostagensPorPerfil(id: number): Postagem[] {
+        let perfil = this._repositorioPerfis[id].consultarPerfil(id);
+        return this._repositorioPosts.consultarPostagem(perfil);
+    }
+
+    exibirPostagensPorHashtag(hashtag: string): PostagemAvancada[] {
+        this._repositorioPosts.consultarPostagem(null,null,hashtag,null);
+    }
 }
 
 

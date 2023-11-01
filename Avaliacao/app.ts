@@ -32,3 +32,40 @@ do {
 } while (opcao != "0");
 
 input('Loggout Realizado com Sucesso!!');
+
+
+function carregarDados(usuario: string) {
+    let LineReaderSync = require("line-reader-sync");
+    let fs = require('fs');
+    let postagens;
+
+    try {
+        postagens = new LineReaderSync("./postagens_" + usuario + ".txt");
+    } catch (error) {
+        let conteudo = '';
+        fs.writeFile("./postagens_" + usuario + ".txt", conteudo, function (err: any) {
+            if (err) throw err;
+        }); 
+        postagens = new LineReaderSync("./postagens_" + usuario + ".txt");
+    }
+    
+    while (true) {
+        let RepositorioDePostagens: string = postagens.readline();
+        if (RepositorioDePostagens != null) {
+            let array: string[] = RepositorioDePostagens.split(";");
+
+            let id: number = parseFloat(array[3]);
+            let texto: string = array[1].toUpperCase();
+            let qtdCurtidas: number = parseFloat(array[3]);
+            let qtdDescurtidas: number = parseFloat(array[3]);
+            let data: Date = array[4];
+            let perfil: Perfil = array[5];
+
+            let postagem = new Postagem(id, texto, qtdCurtidas, qtdDescurtidas, data, perfil);
+            this._redeSocial.incluirPostagem(postagem);
+        } else {
+            console.log('POSTAGENS CARREGADAS: ' + usuario);
+            break
+        }
+    }
+}

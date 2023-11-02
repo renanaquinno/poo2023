@@ -1,3 +1,4 @@
+import { Perfil } from "./Perfil";
 class RepositorioDePerfis {
     private _perfis: Perfil[] = [];
 

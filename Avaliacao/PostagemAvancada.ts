@@ -1,3 +1,4 @@
+import { Postagem } from "./Postagem";
 class PostagemAvancada extends Postagem {
     private _hashtags: Hashtag[] = [];
     private _visualizacoesRestantes: number;

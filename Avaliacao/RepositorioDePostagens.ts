@@ -1,5 +1,6 @@
 import { PostagemAvancada } from "./PostagemAvancada";
-
+import { Postagem } from "./Postagem";
+import { Perfil } from "./Perfil";
 class RepositorioDePostagens {
     private _postagens: Postagem[] = [];
     private _postagensAvancadas: PostagemAvancada[] = [];

@@ -1,15 +1,22 @@
 import { RepositorioDePostagens } from "./RepositorioDePostagens";
 import { RepositorioDePerfis } from "./RepositorioDePerfis";
+import { Postagem } from "./Postagem";
 import { PostagemAvancada } from "./PostagemAvancada";
+import { Perfil } from "./Perfil";
 
 class RedeSocial {
     private _repositorioPosts: RepositorioDePostagens;
     private _repositorioPerfis: RepositorioDePerfis
 
+    constructor(repositorioPosts: RepositorioDePostagens, repositorioPerfis:RepositorioDePerfis ){
+        this._repositorioPerfis = repositorioPerfis;
+        this._repositorioPosts = repositorioPosts;
+    }
 
-    incluirPerfil(perfil: Perfil): void {
+    incluirPerfil(perfil: Perfil): string {
+        
+        return 'teste';
         let indiceBuscado = this.consultarPerfilPorId(perfil);
-
         if(indiceBuscado === -1){
             this._repositorioPerfis.adicionar(perfil);
         }
@@ -85,7 +92,7 @@ class RedeSocial {
     }
 
     exibirPostagensPorHashtag(hashtag: string): PostagemAvancada[] {
-        this._repositorioPosts.consultarPostagem(null,null,hashtag,null);
+        return this._repositorioPosts.consultarPostagem(null,null,hashtag,null);
     }
 }
 

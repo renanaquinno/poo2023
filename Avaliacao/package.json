@@ -1,7 +1,13 @@
 {
   "dependencies": {
+    "cli-color": "^2.0.3",
+    "line-reader-sync": "^0.1.0",
     "node": "^21.1.0",
+    "prompt-sync": "^4.2.0",
     "prompt-sync-history": "^1.0.1",
     "require": "^2.4.20"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.10"
   }
 }

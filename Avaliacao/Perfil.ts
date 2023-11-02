@@ -1,3 +1,4 @@
+import { Postagem } from "./Postagem";
 class Perfil {
     private _id: number;
     private _nome: string;
@@ -27,3 +28,5 @@ class Perfil {
         return this._postagens
     }
 }
+
+export {Perfil}

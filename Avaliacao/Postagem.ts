@@ -1,3 +1,4 @@
+import { Perfil } from "./Perfil";
 class Postagem {
     private _id: number;
     private _texto: string;
@@ -51,3 +52,5 @@ class Postagem {
         return this._qtdCurtidas > this._qtdDescurtidas * 1.5;
     }
 }
+
+export {Postagem}

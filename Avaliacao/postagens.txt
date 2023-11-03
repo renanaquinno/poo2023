@@ -1,0 +1,1 @@
+1;STRING TOLOCALEUPPERCASE();2;1;Fri Nov 03 2023 14:01:36 GMT-0300 (Horário Padrão de Brasília);1

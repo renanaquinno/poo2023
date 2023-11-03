@@ -1,13 +1,13 @@
 import { Perfil } from "./Perfil";
 class Postagem {
-    private _id: number;
+    private _id: string;
     private _texto: string;
     private _qtdCurtidas: number;
     private _qtdDescurtidas: number;
     private _data: Date;
     private _perfil: Perfil;
 
-    constructor(id: number, texto: string, qtdCurtidas: number, qtdDescurtidas: number, data: Date, perfil: Perfil){
+    constructor(id: string, texto: string, qtdCurtidas: number, qtdDescurtidas: number, data: Date, perfil: Perfil){
         this._id = id;
         this._texto = texto;
         this._data = data;
@@ -16,7 +16,7 @@ class Postagem {
         this._qtdDescurtidas = qtdDescurtidas;
     }
 
-    get id(): number {
+    get id(): string {
         return this._id;
     }
 

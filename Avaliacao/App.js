@@ -1,18 +1,28 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const RedeSocial_1 = require("./RedeSocial");
 const Perfil_1 = require("./Perfil");
 const Postagem_1 = require("./Postagem");
 var input = require('prompt-sync')();
+var rs = new RedeSocial_1.RedeSocial();
 class App {
     constructor(redeSocial) {
         this._redeSocial = redeSocial;
     }
     init() {
+        this.carregarDados();
         let opcao = '';
         do {
             console.log('\nBem vindo a Rede Social de Postagens\nDigite uma opção:');
-            console.log('1 - Cadastrar Perfil  2 - Pesquisar Perfil  3 - Cadastrar Postagem  4 - Consultar Postagem  \n' +
-                '5 - Postagens Populares 0 - Sair\n');
+            console.log('1 - Cadastrar Perfil\n' +
+                '2 - Pesquisar Perfil\n' +
+                '3 - Cadastrar Postagem\n' +
+                '4 - Consultar Postagem\n' +
+                '5 - Curtir Postagem\n' +
+                '6 - Descurtir Postagem\n' +
+                '7 - Exibir Postagens Por Perfil\n' +
+                '8 - Exibir Postagens Populares\n' +
+                '0 - Sair\n');
             opcao = input("Opção:");
             switch (opcao) {
                 case "1":
@@ -28,77 +38,148 @@ class App {
                     app.pesquisarPostagem();
                     break;
                 case "5":
+                    app.curtirDescurtir('curtir');
+                    break;
+                case "6":
+                    app.curtirDescurtir('descurtir');
+                    break;
+                case "7":
+                    app.exibirPostagensPerfil();
+                    break;
+                case "8":
                     app.postagensPopulares();
                     break;
             }
         } while (opcao != "0");
+        rs.atualizarBanco();
         input('Loggout Realizado com Sucesso!!');
     }
     cadastrarPerfil() {
         let perfil;
-        let id = input('Digite o ID: ');
-        let nome = input('Digite o Nome: ').toLocaleUpperCase();
-        let email = input('Digite o Email: ').toLocaleUpperCase();
+        // let id: string = input('Digite o ID: ');
+        // let nome: string = input('Digite o Nome: ').toLocaleUpperCase();
+        // let email: string = input('Digite o Email: ').toLocaleUpperCase();
+        let id = '1';
+        let nome = 'renan';
+        let email = 'renan@gmail.com';
         let postagens = [];
-        perfil = new Perfil_1.Perfil(parseFloat(id), nome, email, postagens);
-        return this._redeSocial.incluirPerfil(perfil);
+        perfil = new Perfil_1.Perfil(id, nome, email, postagens);
+        return rs.incluirPerfil(perfil);
     }
     pesquisarPerfil() {
-        let id = input('Digite o ID: ');
-        let nome = input('Digite o Nome: ').toLocaleUpperCase();
-        let email = input('Digite o Email: ').toLocaleUpperCase();
-        this._redeSocial.consultarPerfil(parseFloat(id), nome, email);
+        // let id: string = input('Digite o ID: ');
+        // let nome: string = input('Digite o Nome: ').toLocaleUpperCase();
+        // let email: string = input('Digite o Email: ').toLocaleUpperCase();
+        let id = '1';
+        let nome = 'renan';
+        let email = 'renan@gmail.com';
+        let perfil = rs.consultarPerfil(id, nome, email);
+        let perfilstring = 'ID: ' + perfil.id + '\nNome: ' + perfil.nome + '\nEmail: ' + perfil.email;
+        console.log(perfilstring);
     }
     cadastrarPostagem() {
         let postagem;
-        let id = input('Digite o ID: ');
-        let texto = input('Digite o Texto: ').toLocaleUpperCase();
+        // let id: string = input('Digite o ID: ');
+        // let texto: string = input('Digite o Texto: ').toLocaleUpperCase();
+        // let qtdCurtidas: number = 0;
+        // let qtdDescurtidas: number = 0;
+        // let data = new Date();
+        // let id_perfil: string = input('Digite o Id do Perfil').toLocaleUpperCase();
+        let id = '1';
+        let texto = 'string toLocaleUpperCase()';
         let qtdCurtidas = 0;
         let qtdDescurtidas = 0;
         let data = new Date();
-        let id_perfil = input('Digite o Id do Perfil').toLocaleUpperCase();
-        let perfil = this._redeSocial.consultarPerfil(parseFloat(id_perfil), null, null);
-        postagem = new Postagem_1.Postagem(parseInt(id), texto, qtdCurtidas, qtdDescurtidas, data, perfil);
-        this._redeSocial.incluirPostagem(postagem);
+        let id_perfil = '1';
+        let perfil = rs.consultarPerfilPorId(id_perfil);
+        postagem = new Postagem_1.Postagem(id, texto, qtdCurtidas, qtdDescurtidas, data, perfil);
+        console.log(rs.incluirPostagem(postagem));
     }
     pesquisarPostagem() {
-        let id = input('Digite o ID: ');
-        let texto = input('Digite o Texto: ').toLocaleUpperCase();
-        let hashtag = input('Digite a Hashtag: ').toLocaleUpperCase();
-        let id_perfil = input('Digite o Id do Perfil').toLocaleUpperCase();
-        let perfil = this._redeSocial.consultarPerfil(parseFloat(id_perfil), null, null);
-        this._redeSocial.consultarPostagem(parseInt(id), texto, hashtag, perfil);
+        //let id: string = input('Digite o ID: ');
+        //let texto: string = input('Digite o Texto: ').toLocaleUpperCase();
+        //let hashtag: string = input('Digite a Hashtag: ').toLocaleUpperCase();
+        //let id_perfil: string = input('Digite o Id do Perfil').toLocaleUpperCase();
+        let id = '1';
+        let texto = 'string toLocaleUpperCase()';
+        let hashtag = '0';
+        let id_perfil = '1';
+        let perfil = rs.consultarPerfilPorId(id_perfil);
+        let postagem = rs.consultarPostagem(id, texto, hashtag, perfil);
+        let postagemstring = 'ID: ' + postagem.id + '\nTexto: ' + postagem.texto + '\nPerfil: ' + postagem.perfil.nome;
+        console.log(postagemstring);
+    }
+    curtirDescurtir(opcao) {
+        //let id: string = input('Informe ID da Postagem: ');
+        let id = '1';
+        if (opcao == 'curtir') {
+            rs.curtir(id);
+        }
+        else if (opcao == 'descurtir') {
+            rs.descurtir(id);
+        }
+    }
+    exibirPostagensPerfil() {
+        //let id: string = input('Informe ID do Perfil: ');
+        let id = '1';
+        console.log(rs.exibirPostagensPorPerfil(id));
     }
     postagensPopulares() {
+        let post = rs.postagensPopulares();
+        if (post.length > 0) {
+            console.log(rs.postagensPopulares());
+        }
+        else {
+            console.log("Não Existem Postagens Populares");
+        }
     }
     carregarDados() {
         let LineReaderSync = require("line-reader-sync");
+        let perfil = new LineReaderSync("./perfil.txt");
+        while (true) {
+            let perfil_bd = perfil.readline();
+            if (perfil_bd != null) {
+                let array = perfil_bd.split(";");
+                let id = array[0];
+                let nome = array[1].toUpperCase();
+                let email = array[2].toUpperCase();
+                let postagens = [];
+                let perfil = new Perfil_1.Perfil(id, nome, email, postagens);
+                rs.incluirPerfil(perfil);
+                console.log('Perfil Lido: ' + perfil.nome);
+            }
+            else {
+                break;
+            }
+        }
+        console.log("---- PERFIS CARREGADOS ----\n");
         let fs = require('fs');
         let postagens;
         let usuario = '';
         try {
-            postagens = new LineReaderSync("./postagens_" + usuario + ".txt");
+            postagens = new LineReaderSync("./postagens.txt");
         }
         catch (error) {
             let conteudo = '';
-            fs.writeFile("./postagens_" + usuario + ".txt", conteudo, function (err) {
+            fs.writeFile("./postagens.txt", conteudo, function (err) {
                 if (err)
                     throw err;
             });
-            postagens = new LineReaderSync("./postagens_" + usuario + ".txt");
+            postagens = new LineReaderSync("./postagens.txt");
         }
         while (true) {
-            let RepositorioDePostagens = postagens.readline();
-            if (RepositorioDePostagens != null) {
-                let array = RepositorioDePostagens.split(";");
-                let id = parseFloat(array[3]);
+            let repositorioDePostagens = postagens.readline();
+            if (repositorioDePostagens != null) {
+                let array = repositorioDePostagens.split(";");
+                let id = array[0];
                 let texto = array[1].toUpperCase();
-                let qtdCurtidas = parseFloat(array[3]);
+                let qtdCurtidas = parseFloat(array[2]);
                 let qtdDescurtidas = parseFloat(array[3]);
                 let data = array[4];
-                let perfil = array[5];
+                let perfil_id = array[5];
+                perfil = rs.consultarPerfilPorId(perfil_id);
                 let postagem = new Postagem_1.Postagem(id, texto, qtdCurtidas, qtdDescurtidas, data, perfil);
-                this._redeSocial.incluirPostagem(postagem);
+                rs.incluirPostagem(postagem);
             }
             else {
                 console.log('POSTAGENS CARREGADAS: ' + usuario);

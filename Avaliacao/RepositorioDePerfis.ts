@@ -1,9 +1,15 @@
 import { Perfil } from "./Perfil";
+
+
 class RepositorioDePerfis {
     private _perfis: Perfil[] = [];
 
-    constructor(perfis: Perfil[]){
-        this._perfis = perfis;
+    constructor(_perfis: Perfil[]){
+        this._perfis = [] ;
+    }
+
+    get todosPerfis (){
+        return this._perfis;
     }
 
     adicionar(perfil: Perfil) {
@@ -15,14 +21,15 @@ class RepositorioDePerfis {
         }
     }
 
-    consultarPerfil(id?: number, nome?: string, email?: string): Perfil {
+    consultarPerfil(id?: string, nome?: string, email?: string): Perfil {
         let perfilProcurado!: Perfil;
-        for (let perfil of this._perfis) {
-            if (perfil.id == id || perfil.nome == nome || perfil.email == email) {
-                perfilProcurado = perfil;
+        for (let i = 0; i < this._perfis.length; i++) {
+            if (this._perfis[i].id == id || this._perfis[i].nome == nome || this._perfis[i].email == email) {
+                perfilProcurado = this._perfis[i];
                 break;
-            }
+            }            
         }
+
         return perfilProcurado;
     }
 

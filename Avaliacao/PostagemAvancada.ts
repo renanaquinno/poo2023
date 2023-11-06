@@ -1,29 +1,33 @@
 import { Postagem } from "./Postagem";
+import { Perfil } from "./Perfil";
+import { Hashtag } from "./Hashtag";
 class PostagemAvancada extends Postagem {
     private _hashtags: Hashtag[] = [];
-    private _visualizacoesRestantes: number;
+    private _visualizacoesRestantes: number = 100;
 
-    constructor(id: number, texto: string, qtdCurtidas: number, qtdDescurtidas: number, data: Date, perfil: Perfil, hashtags: Hashtag[], visualizacoesRestantes: number){
+    constructor(id: string, texto: string, qtdCurtidas: number, qtdDescurtidas: number, data: Date, perfil: Perfil, _hashtags: Hashtag, visualizacoesRestantes: number){
         super(id, texto, qtdCurtidas, qtdDescurtidas, data, perfil);
-        this._hashtags = hashtags;
+        this._hashtags = [];
         this._visualizacoesRestantes = visualizacoesRestantes;
     }
 
-    get hashtags(): string {
-        return this.hashtags;
+    get hashtags(): Hashtag[]{
+        return this._hashtags;
     }
 
     adicionarHashtag(hashtag: Hashtag): void{
-        this._hashtags.push(hashtag);
+        if (!this.existeHashtag){
+            this._hashtags.push(hashtag);
+        }
+        hashtag.atualizarContador();
     }
 
-    existeHashtag(hashtag: Hashtag): boolean {
+    existeHashtag(hashtag: string): boolean {
         for (let item of this._hashtags){
-            if (item === hashtag){
+            if (item.hashtag === hashtag){
                 return true;
             }
         }
-
         return false;
     }
 
@@ -32,11 +36,16 @@ class PostagemAvancada extends Postagem {
     }
 
     visualizacoesRestantes(): number {
-        if (this._visualizacoesRestantes > 100) { //limite imposto = 100
+        if (this._visualizacoesRestantes <= 0) { 
             return 0;
         } else {
             return 100 - this._visualizacoesRestantes;
         }
+    }
+
+    exibir3HashtagsPopulares(): Hashtag[] {
+        const hashtagsOrdenadas = this._hashtags.sort((a, b) => b.contador - a.contador);
+        return hashtagsOrdenadas.slice(0, 3);
     }
 }
 

@@ -1,22 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RedeSocial = void 0;
-const RepositorioDePostagens_1 = require("./RepositorioDePostagens");
-const RepositorioDePerfis_1 = require("./RepositorioDePerfis");
 const Postagem_1 = require("./Postagem");
 const PostagemAvancada_1 = require("./PostagemAvancada");
 class RedeSocial {
     constructor(_repositorioPerfis, _repositorioPosts) {
-        this._repositorioPerfis = new RepositorioDePerfis_1.RepositorioDePerfis();
-        this._repositorioPosts = new RepositorioDePostagens_1.RepositorioDePostagens();
+        this._repositorioPerfis = _repositorioPerfis;
+        this._repositorioPosts = _repositorioPosts;
     }
     incluirPerfil(perfil) {
         if (!(this.existePerfil(perfil))) {
             this._repositorioPerfis.adicionar(perfil);
-            console.log("Adicionado com Sucesso!");
+            return "Adicionado com Sucesso!";
         }
         else {
-            console.log("Erro ao Adicionar, ID ja existente!");
+            return "Erro ao Adicionar, ID ja existente!";
         }
     }
     existePerfil(perfilBuscado) {
@@ -50,12 +48,8 @@ class RedeSocial {
         return false;
     }
     incluirPostagem(postagem) {
-        if (!this._repositorioPosts.consultar(postagem.id)) {
+        if (this._repositorioPosts.consultar(postagem.id)) {
             this._repositorioPosts.adicionar(postagem);
-            console.log("Postagen Adicionada!");
-        }
-        else {
-            console.log("Postagen já existe!");
         }
     }
     consultarPostagens(id, texto, hashtag, perfil) {
@@ -69,17 +63,11 @@ class RedeSocial {
         if (postProcurado != null) {
             postProcurado.curtir();
         }
-        else {
-            console.log("Postagem Não Existe");
-        }
     }
     descurtir(id) {
         let postProcurado = this.consultarPostagemPorId(id);
         if (postProcurado != null) {
             postProcurado.descurtir();
-        }
-        else {
-            console.log("Postagem Não Existe");
         }
     }
     decrementarVisualizacoes(postagem) {
@@ -93,6 +81,7 @@ class RedeSocial {
     exibirPostagensPorPerfil(id) {
         let postagens = this._repositorioPosts.consultar(id);
         let postagensValidas = [];
+        console.log(postagens);
         if (postagens != null) {
             for (let post of postagens) {
                 if (post instanceof PostagemAvancada_1.PostagemAvancada) {
@@ -134,13 +123,8 @@ class RedeSocial {
     exibirPostagemMaisRecente() {
         return this._repositorioPosts.exibirPostagemMaisRecente();
     }
-    exibirPostagemMaisCurtida() {
-        return this._repositorioPosts.exibirPostagemMaisCurtida();
-    }
-    excluirPostagem(id) {
-        return this._repositorioPosts.excluirPostagem(id);
-    }
     atualizarBanco() {
+        console.log('teste');
         let listaPostagens = '';
         let postagens = this._repositorioPosts.todasPostagens;
         for (let i = 0; i < postagens.length; i++) {
@@ -148,16 +132,6 @@ class RedeSocial {
         }
         var bdPostagens = require('fs');
         bdPostagens.writeFile('postagens.txt', listaPostagens, function (err) {
-            if (err)
-                throw err;
-        });
-        let listaPerfis = '';
-        let perfis = this._repositorioPerfis.todosPerfis;
-        for (let i = 0; i < perfis.length; i++) {
-            listaPerfis = listaPerfis + perfis[i].id + ';' + perfis[i].nome + ';' + perfis[i].email + ';' + perfis[i].postagens + '\n';
-        }
-        var bdperfis = require('fs');
-        bdperfis.writeFile('perfis.txt', listaPerfis, function (err) {
             if (err)
                 throw err;
         });

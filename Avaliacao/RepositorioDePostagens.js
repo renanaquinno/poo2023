@@ -3,9 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RepositorioDePostagens = void 0;
 const PostagemAvancada_1 = require("./PostagemAvancada");
 const Postagem_1 = require("./Postagem");
-const Hashtag_1 = require("./Hashtag");
 class RepositorioDePostagens {
-    constructor(postagens) {
+    constructor(_postagens) {
         this._postagens = [];
         this._postagens = [];
     }
@@ -34,6 +33,17 @@ class RepositorioDePostagens {
             }
         }
     }
+    consultarporhastag(hashtag) {
+        let postagens = [];
+        for (let postagem of this._postagens) {
+            if (postagem instanceof PostagemAvancada_1.PostagemAvancada) {
+                if (postagem.hashtags == hashtag) {
+                    postagens.push(postagem);
+                }
+            }
+        }
+        return postagens;
+    }
     consultar(id, texto, hashtag, perfil) {
         let postagens = [];
         for (let postagem of this._postagens) {
@@ -43,7 +53,7 @@ class RepositorioDePostagens {
                 }
             }
             if (postagem instanceof PostagemAvancada_1.PostagemAvancada) {
-                if (postagem.id == id || postagem.texto == texto || postagem.perfil == perfil || postagem.existeHashtag(hashtag)) {
+                if (postagem.id == id || postagem.texto == texto || postagem.perfil == perfil || postagem.hashtags == hashtag) {
                     postagem.decrementarVisualizacoes();
                     postagens.push(postagem);
                 }
@@ -77,26 +87,6 @@ class RepositorioDePostagens {
             }
         }
         return postsPopulares;
-    }
-    exibirTop3HashtagsPopulares() {
-        let todasHashtags = [];
-        for (let postagem of this._postagens) {
-            if (postagem instanceof PostagemAvancada_1.PostagemAvancada) {
-                todasHashtags.push(...postagem.hashtags);
-            }
-        }
-        const hashtagsContadorMap = new Map();
-        for (let hashtag of todasHashtags) {
-            const existente = hashtagsContadorMap.get(hashtag.hashtag);
-            if (existente) {
-                existente.atualizarContador();
-            }
-            else {
-                hashtagsContadorMap.set(hashtag.hashtag, new Hashtag_1.Hashtag(hashtag.hashtag, 1));
-            }
-        }
-        let hashtagsOrdenadas = Array.from(hashtagsContadorMap.values()).sort((a, b) => b.contador - a.contador);
-        return hashtagsOrdenadas.slice(0, 3);
     }
     exibirCurtidasEDescurtidas(id) {
         let indiceBuscado = this.consultarIndicePorId(id);
@@ -144,18 +134,19 @@ class RepositorioDePostagens {
         let postagemProcurada;
         let postagemAvancadaProcurada;
         for (let postagem of this._postagens) {
-            if (postagem.id == id || postagem.texto == texto || postagem.perfil == perfil) {
-                postagemProcurada = postagem;
-                break;
+            if (postagem instanceof Postagem_1.Postagem) {
+                if (postagem.id == id || postagem.texto == texto || postagem.perfil == perfil) {
+                    postagemProcurada = postagem;
+                    break;
+                }
+            }
+            if (postagem instanceof PostagemAvancada_1.PostagemAvancada) {
+                if (postagem.id == id || postagem.texto == texto || postagem.hashtags == hashtag || postagem.perfil == perfil) {
+                    postagemAvancadaProcurada = postagem;
+                    break;
+                }
             }
         }
-        // for (let postagemAvancada of this._postagensAvancadas) {
-        //     if (postagemAvancada.id == id || postagemAvancada.texto == texto || postagemAvancada.perfil == perfil) {
-        //     // if (postagemAvancada.id == id || postagemAvancada.texto == texto || postagemAvancada.hashtags == hashtag || postagemAvancada.perfil == perfil) {
-        //         postagemAvancadaProcurada = postagemAvancada;
-        //         break;
-        //     }
-        // }
         return postagemProcurada;
     }
 }

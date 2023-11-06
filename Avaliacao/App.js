@@ -26,7 +26,7 @@ class App {
                 '7 - Exibir Postagens Por Perfil\n' +
                 '8 - Exibir Postagens Por Hashtag\n' +
                 '9 - Exibir Postagens Populares\n' +
-                '10 - Exibir Hashtags Populares\n' +
+                '10 - Exibir Hashtag Popular\n' +
                 '11 - Exibir Curtidas e Descurtidas\n' +
                 '12 - Exibir Postagem Mais Recente\n' +
                 '13 - Exibir Postagem Mais Curtida\n' +
@@ -119,17 +119,19 @@ class App {
             let avancada = input('Digite 1 para Postagem Normal ou 2 Para Postagem Avançada: ');
             if (avancada == '1') {
                 postagem = new Postagem_1.Postagem(id, texto, qtdCurtidas, qtdDescurtidas, data, perfil);
+                rs.incluirPostagem(postagem);
             }
             else if (avancada == '2') {
                 let tag = input('Digite a Hashtag: ');
                 let hashtag = new Hashtag_1.Hashtag(tag, 0);
                 let visualizacoesRestantes = input('Vizualizações Restantes: ');
-                postagem = new PostagemAvancada_1.PostagemAvancada(id, texto, qtdCurtidas, qtdDescurtidas, data, perfil, hashtag, visualizacoesRestantes);
+                let postagemAvancada = new PostagemAvancada_1.PostagemAvancada(id, texto, qtdCurtidas, qtdDescurtidas, data, perfil, tag, visualizacoesRestantes);
+                rs.incluirHashtag(hashtag);
+                rs.incluirPostagem(postagemAvancada);
             }
             else {
                 console.log("Opção Invalida!");
             }
-            rs.incluirPostagem(postagem);
         }
         else {
             console.log('Perfil não existe!');
@@ -143,11 +145,13 @@ class App {
         let id_perfil = input('Digite o Id do Perfil: ').toLocaleUpperCase();
         let perfil = rs.consultarPerfilPorId(id_perfil);
         let postagem = rs.consultarPostagens(id, texto, hashtag, perfil);
-        console.log(postagem);
         for (let pos of postagem) {
             let postagemstring = '\n -- POSTAGEM ENCONTRADA -- \nID: ' + pos.id + '\nTexto: ' + pos.texto +
                 '\nPerfil: ' + pos.perfil.nome + '\n Data Criação: ' + pos.data + '\n Curtidas: ' +
                 pos.qtdCurtidas + '\n Descurtidas: ' + pos.qtdDescurtidas;
+            if (pos instanceof PostagemAvancada_1.PostagemAvancada) {
+                postagemstring += '\n Hashtag: ' + pos.hashtags;
+            }
             console.log(postagemstring);
         }
     }
@@ -212,7 +216,7 @@ class App {
     }
     carregarDados() {
         let LineReaderSync = require("line-reader-sync");
-        let perfil = new LineReaderSync("./perfil.txt");
+        let perfil = new LineReaderSync("./perfis.txt");
         while (true) {
             let perfil_bd = perfil.readline();
             if (perfil_bd != null) {
@@ -256,7 +260,7 @@ class App {
                 let perfil_id = array[5];
                 perfil = rs.consultarPerfilPorId(perfil_id);
                 let postagem = new Postagem_1.Postagem(id, texto, qtdCurtidas, qtdDescurtidas, data, perfil);
-                //rs.incluirPostagem(postagem);
+                rs.incluirPostagem(postagem);
             }
             else {
                 console.log('POSTAGENS CARREGADAS: ' + usuario);

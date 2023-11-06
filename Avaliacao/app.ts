@@ -29,7 +29,7 @@ class App {
             '7 - Exibir Postagens Por Perfil\n'+
             '8 - Exibir Postagens Por Hashtag\n'+
             '9 - Exibir Postagens Populares\n'+
-            '10 - Exibir Hashtags Populares\n'+
+            '10 - Exibir Hashtag Popular\n'+
             '11 - Exibir Curtidas e Descurtidas\n'+
             '12 - Exibir Postagem Mais Recente\n'+
             '13 - Exibir Postagem Mais Curtida\n'+
@@ -104,7 +104,6 @@ class App {
         let email: string = input('Digite o Email: ').toLocaleUpperCase();
         let perfil = rs.consultarPerfil(id, nome, email);
         if (perfil){          
-
             let perfilstring = 'ID: '+ perfil.id + '\nNome: '+ perfil.nome + '\nEmail: '+perfil.email;
             console.log(perfilstring);
         } else {
@@ -126,16 +125,20 @@ class App {
         if (perfil){
             let avancada: string = input('Digite 1 para Postagem Normal ou 2 Para Postagem Avançada: ');
             if (avancada == '1'){
-                postagem = new Postagem(id, texto, qtdCurtidas, qtdDescurtidas, data, perfil);        
+                postagem = new Postagem(id, texto, qtdCurtidas, qtdDescurtidas, data, perfil);    
+                rs.incluirPostagem(postagem);
+    
             } else if (avancada == '2'){
                 let tag : string = input('Digite a Hashtag: ');
-                let hashtag = new Hashtag(tag,0);
-                let visualizacoesRestantes: number = input('Vizualizações Restantes: ');
-                postagem = new PostagemAvancada(id, texto, qtdCurtidas, qtdDescurtidas, data, perfil, hashtag, visualizacoesRestantes);        
+                let hashtag = new Hashtag(tag, 0);
+                let visualizacoesRestantes: number = input('Vizualizações Restantes: ');                
+                let postagemAvancada = new PostagemAvancada(id, texto, qtdCurtidas, qtdDescurtidas, data, perfil, tag, visualizacoesRestantes);        
+                rs.incluirHashtag(hashtag);
+                rs.incluirPostagem(postagemAvancada);
+
             } else {
                 console.log("Opção Invalida!");
             }
-            rs.incluirPostagem(postagem);
         } else {
             console.log('Perfil não existe!');
         }
@@ -148,17 +151,18 @@ class App {
         let hashtag: string = input('Digite a Hashtag: ').toLocaleUpperCase();
         let id_perfil: string = input('Digite o Id do Perfil: ').toLocaleUpperCase();
         let perfil = rs.consultarPerfilPorId(id_perfil);
-        let postagem = rs.consultarPostagens(id, texto, hashtag, perfil);
-
-        console.log(postagem);
+        let postagem = rs.consultarPostagens(id, texto, hashtag, perfil);        
 
         for (let pos of postagem){
             let postagemstring = '\n -- POSTAGEM ENCONTRADA -- \nID: '+ pos.id + '\nTexto: '+ pos.texto + 
             '\nPerfil: '+pos.perfil.nome + '\n Data Criação: ' + pos.data +  '\n Curtidas: ' + 
             pos.qtdCurtidas +  '\n Descurtidas: ' + pos.qtdDescurtidas;
+
+            if (pos instanceof PostagemAvancada){
+                postagemstring += '\n Hashtag: ' + pos.hashtags;
+            }
             console.log(postagemstring);
         }
-      
     }
 
     curtirDescurtir(opcao: string){
@@ -229,7 +233,7 @@ class App {
 
     carregarDados() {
         let LineReaderSync = require("line-reader-sync");
-        let perfil = new LineReaderSync("./perfil.txt");
+        let perfil = new LineReaderSync("./perfis.txt");
         while (true) {
             let perfil_bd: string = perfil.readline();
             if (perfil_bd != null) {
@@ -275,7 +279,7 @@ class App {
                 
                 perfil = rs.consultarPerfilPorId(perfil_id);
                 let postagem = new Postagem(id, texto, qtdCurtidas, qtdDescurtidas, data, perfil);
-                //rs.incluirPostagem(postagem);
+                rs.incluirPostagem(postagem);
             } else {
                 console.log('POSTAGENS CARREGADAS: ' + usuario);
                 break

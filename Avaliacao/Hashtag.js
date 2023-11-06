@@ -8,7 +8,10 @@ class Hashtag {
         this._contador = _contador;
     }
     get hashtag() {
-        return this.hashtag;
+        return this._hashtag;
+    }
+    get todasHashtags() {
+        return this._hashtag;
     }
     get contador() {
         return this.contador;

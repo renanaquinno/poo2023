@@ -5,10 +5,12 @@ const RepositorioDePostagens_1 = require("./RepositorioDePostagens");
 const RepositorioDePerfis_1 = require("./RepositorioDePerfis");
 const Postagem_1 = require("./Postagem");
 const PostagemAvancada_1 = require("./PostagemAvancada");
+const RepositorioHashtags_1 = require("./RepositorioHashtags");
 class RedeSocial {
-    constructor(_repositorioPerfis, _repositorioPosts) {
+    constructor(_repositorioPerfis, _repositorioPosts, _repositorioHashtags) {
         this._repositorioPerfis = new RepositorioDePerfis_1.RepositorioDePerfis();
         this._repositorioPosts = new RepositorioDePostagens_1.RepositorioDePostagens();
+        this._repositorioHashtag = new RepositorioHashtags_1.RepositorioDeHastags();
     }
     incluirPerfil(perfil) {
         if (!(this.existePerfil(perfil))) {
@@ -42,6 +44,13 @@ class RedeSocial {
             }
         }
         return perfil_procurado;
+    }
+    consultarHashTag(tag) {
+        let tag_procurado = this._repositorioHashtag.consultarHashtag(tag);
+        return tag_procurado;
+    }
+    incluirHashtag(tag) {
+        this._repositorioHashtag.adicionar(tag);
     }
     existePostagem(postagem) {
         if (this._repositorioPosts.consultar(postagem.id)) {
@@ -110,7 +119,7 @@ class RedeSocial {
         return null;
     }
     exibirPostagensPorHashtag(hashtag) {
-        let postagens = this._repositorioPosts.consultar(undefined, undefined, hashtag);
+        let postagens = this._repositorioPosts.consultarporhastag(hashtag);
         let postagensValidas = [];
         if (postagens != null) {
             for (let postagem of postagens) {
@@ -126,7 +135,7 @@ class RedeSocial {
         return this._repositorioPosts.consultarPopulares();
     }
     exibirHashtagsMaisPopulares() {
-        return this._repositorioPosts.exibirTop3HashtagsPopulares();
+        return this._repositorioHashtag.exibirToptagPopular();
     }
     exibirCurtidasEDescurtidas(id) {
         return this._repositorioPosts.exibirCurtidasEDescurtidas(id);

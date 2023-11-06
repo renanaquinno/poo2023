@@ -3,14 +3,18 @@ import { RepositorioDePerfis } from "./RepositorioDePerfis";
 import { Postagem } from "./Postagem";
 import { PostagemAvancada } from "./PostagemAvancada";
 import { Perfil } from "./Perfil";
+import { Hashtag } from "./Hashtag";
+import { RepositorioDeHastags } from "./RepositorioHashtags";
 
 class RedeSocial {
     private _repositorioPerfis: RepositorioDePerfis;
     private _repositorioPosts: RepositorioDePostagens;
+    private _repositorioHashtag: RepositorioDeHastags;
 
-    constructor (_repositorioPerfis: RepositorioDePerfis, _repositorioPosts: RepositorioDePostagens){
+    constructor (_repositorioPerfis: RepositorioDePerfis, _repositorioPosts: RepositorioDePostagens, _repositorioHashtags: RepositorioDeHastags){
         this._repositorioPerfis = new RepositorioDePerfis();
         this._repositorioPosts = new RepositorioDePostagens();
+        this._repositorioHashtag = new RepositorioDeHastags();
     }
 
     incluirPerfil(perfil: Perfil) {
@@ -48,6 +52,15 @@ class RedeSocial {
             }
         }
         return perfil_procurado;
+    }
+
+    consultarHashTag(tag: string): Hashtag {
+        let tag_procurado = this._repositorioHashtag.consultarHashtag(tag);
+        return tag_procurado;
+    }
+
+    incluirHashtag(tag: Hashtag){
+        this._repositorioHashtag.adicionar(tag)
     }
 
     existePostagem(postagem: Postagem | PostagemAvancada){
@@ -126,7 +139,7 @@ class RedeSocial {
     }
 
     exibirPostagensPorHashtag(hashtag: string): PostagemAvancada[] | null{
-        let postagens = this._repositorioPosts.consultar(undefined, undefined, hashtag);
+        let postagens = this._repositorioPosts.consultarporhastag(hashtag);
         let postagensValidas: PostagemAvancada[] = [];
 
         if (postagens != null){
@@ -135,7 +148,7 @@ class RedeSocial {
                     postagensValidas.push(postagem);
                 }
             }
-
+            
             return postagensValidas;
         }
 
@@ -146,8 +159,8 @@ class RedeSocial {
         return this._repositorioPosts.consultarPopulares();
     }
     
-    exibirHashtagsMaisPopulares(): Hashtag[]{
-        return this._repositorioPosts.exibirTop3HashtagsPopulares();
+    exibirHashtagsMaisPopulares(): string{
+        return this._repositorioHashtag.exibirToptagPopular();
     }
 
     exibirCurtidasEDescurtidas(id: string): string{
@@ -171,10 +184,11 @@ class RedeSocial {
     atualizarBanco() {
         let listaPostagens = ''
         let postagens = this._repositorioPosts.todasPostagens;
+        
         for (let i = 0; i < postagens.length; i++) {
             listaPostagens = listaPostagens + postagens[i].id + ';'+ postagens[i].texto + ';' + postagens[i].qtdCurtidas + ';' + postagens[i].qtdDescurtidas + ';' + postagens[i].data + ';' + postagens[i].perfil.id + '\n';
         }
-
+        
         var bdPostagens = require('fs');
         bdPostagens.writeFile('postagens.txt', listaPostagens, function (err: any) {
             if (err) throw err;

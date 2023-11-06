@@ -8,7 +8,11 @@ class Hashtag{
     }
 
     get hashtag(): string{
-        return this.hashtag;
+        return this._hashtag;
+    }
+
+    get todasHashtags(){
+        return this._hashtag;
     }
 
     get contador(): number{

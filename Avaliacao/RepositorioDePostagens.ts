@@ -4,6 +4,7 @@ import { Perfil } from "./Perfil";
 import { stringify } from "querystring";
 class RepositorioDePostagens {
     private _postagens: (Postagem | PostagemAvancada)[] = [];
+    
 
     constructor(_postagens: Postagem | PostagemAvancada[]) {
         this._postagens = [];
@@ -15,6 +16,16 @@ class RepositorioDePostagens {
 
     get todasPostagens() {
         return this._postagens;
+    }
+
+    todosPost(): string[]{
+        let post = [];
+        let string = '';
+        for (let p of this._postagens){
+            string = 'ID: ' + p.id + '; Texto: ' + p.texto;
+            post.push(string);
+        }
+        return post;
     }
 
     adicionar(postagem: Postagem | PostagemAvancada) {
@@ -44,10 +55,10 @@ class RepositorioDePostagens {
             if (postagem instanceof PostagemAvancada) {
                 if (postagem.hashtags == hashtag) {
                     postagens.push(postagem)
+                    postagem.decrementarVisualizacoes();
                 }
             }
         }
-
         return postagens;
     }
 
@@ -173,6 +184,7 @@ class RepositorioDePostagens {
             if (postagem instanceof PostagemAvancada) {
                 if (postagem.id == id || postagem.texto == texto || postagem.hashtags == hashtag || postagem.perfil == perfil) {
                     postagemAvancadaProcurada = postagem;
+                    postagem.decrementarVisualizacoes();
                     break;
                 }
             }

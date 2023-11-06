@@ -120,16 +120,7 @@ class RedeSocial {
     }
     exibirPostagensPorHashtag(hashtag) {
         let postagens = this._repositorioPosts.consultarporhastag(hashtag);
-        let postagensValidas = [];
-        if (postagens != null) {
-            for (let postagem of postagens) {
-                if (postagem instanceof PostagemAvancada_1.PostagemAvancada) {
-                    postagensValidas.push(postagem);
-                }
-            }
-            return postagensValidas;
-        }
-        return null;
+        return postagens;
     }
     postagensPopulares() {
         return this._repositorioPosts.consultarPopulares();
@@ -148,6 +139,12 @@ class RedeSocial {
     }
     excluirPostagem(id) {
         return this._repositorioPosts.excluirPostagem(id);
+    }
+    exibirTodasPostagens() {
+        return this._repositorioPosts.todosPost();
+    }
+    exibirTodosPerfis() {
+        return this._repositorioPerfis.todosPerfis;
     }
     atualizarBanco() {
         let listaPostagens = '';

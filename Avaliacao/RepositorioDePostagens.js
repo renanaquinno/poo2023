@@ -14,6 +14,15 @@ class RepositorioDePostagens {
     get todasPostagens() {
         return this._postagens;
     }
+    todosPost() {
+        let post = [];
+        let string = '';
+        for (let p of this._postagens) {
+            string = 'ID: ' + p.id + '; Texto: ' + p.texto;
+            post.push(string);
+        }
+        return post;
+    }
     adicionar(postagem) {
         if (this._postagens.includes(postagem)) {
             return false;
@@ -39,6 +48,7 @@ class RepositorioDePostagens {
             if (postagem instanceof PostagemAvancada_1.PostagemAvancada) {
                 if (postagem.hashtags == hashtag) {
                     postagens.push(postagem);
+                    postagem.decrementarVisualizacoes();
                 }
             }
         }
@@ -143,6 +153,7 @@ class RepositorioDePostagens {
             if (postagem instanceof PostagemAvancada_1.PostagemAvancada) {
                 if (postagem.id == id || postagem.texto == texto || postagem.hashtags == hashtag || postagem.perfil == perfil) {
                     postagemAvancadaProcurada = postagem;
+                    postagem.decrementarVisualizacoes();
                     break;
                 }
             }

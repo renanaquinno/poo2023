@@ -29,11 +29,12 @@ class App {
             '7 - Exibir Postagens Por Perfil\n'+
             '8 - Exibir Postagens Por Hashtag\n'+
             '9 - Exibir Postagens Populares\n'+
-            '10 - Exibir Hashtag Popular\n'+
+            '10 - Exibir Todas as Postagens\n'+
             '11 - Exibir Curtidas e Descurtidas\n'+
             '12 - Exibir Postagem Mais Recente\n'+
             '13 - Exibir Postagem Mais Curtida\n'+
-            '14 - Excluir Postagem\n'+
+            '14 - Exibir Todos Perfis\n'+
+            '15 - Excluir Postagem\n'+
             '0 - Sair\n');
             opcao = input("Opção:");
             switch (opcao) {
@@ -65,7 +66,7 @@ class App {
                     app.postagensPopulares();
                     break;
                 case "10":
-                    app.exibirHashtagsMaisPopulares();
+                    app.exibirTodasPostagens();
                     break;
                 case "11":
                     app.exibirCurtidasEDescurtidas();
@@ -77,6 +78,9 @@ class App {
                     app.exibirPostagemMaisCurtida();
                     break;
                 case "14":
+                    app.exibirTodosPerfis();
+                    break;
+                case "15":
                     app.excluirPostagem();
                     break;
             }
@@ -230,6 +234,15 @@ class App {
         console.log(rs.excluirPostagem(id));
     }
 
+    exibirTodasPostagens(){
+        console.log('----- EXIBIR TODAS AS POSTAGENS -----');
+        console.log(rs.exibirTodasPostagens());
+    }
+
+    exibirTodosPerfis(){
+        console.log('----- EXIBIR TODOS PERFIS -----');
+        console.log(rs.exibirTodosPerfis());
+    }
 
     carregarDados() {
         let LineReaderSync = require("line-reader-sync");

@@ -140,26 +140,14 @@ class RedeSocial {
 
     exibirPostagensPorHashtag(hashtag: string): PostagemAvancada[] | null{
         let postagens = this._repositorioPosts.consultarporhastag(hashtag);
-        let postagensValidas: PostagemAvancada[] = [];
-
-        if (postagens != null){
-            for (let postagem of postagens){
-                if (postagem instanceof PostagemAvancada){
-                    postagensValidas.push(postagem);
-                }
-            }
-            
-            return postagensValidas;
-        }
-
-        return null;
+        return postagens;
     }
 
     postagensPopulares(): (Postagem|PostagemAvancada)[] | null{
         return this._repositorioPosts.consultarPopulares();
     }
     
-    exibirHashtagsMaisPopulares(): string{
+    exibirHashtagsMaisPopulares(): string {
         return this._repositorioHashtag.exibirToptagPopular();
     }
 
@@ -179,7 +167,13 @@ class RedeSocial {
         return this._repositorioPosts.excluirPostagem(id);
     }
 
+    exibirTodasPostagens(): string[]{
+        return this._repositorioPosts.todosPost();
+    }
     
+    exibirTodosPerfis(){
+        return this._repositorioPerfis.todosPerfis;
+    }
 
     atualizarBanco() {
         let listaPostagens = ''
@@ -206,6 +200,5 @@ class RedeSocial {
         });
     }
 }
-
 
 export {RedeSocial}

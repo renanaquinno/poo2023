@@ -34,7 +34,8 @@ class App {
             '12 - Exibir Postagem Mais Recente\n'+
             '13 - Exibir Postagem Mais Curtida\n'+
             '14 - Exibir Todos Perfis\n'+
-            '15 - Excluir Postagem\n'+
+            '15 - Exibir Hashtag Mais Popular\n'+
+            '16 - Excluir Postagem\n'+
             '0 - Sair\n');
             opcao = input("Opção:");
             switch (opcao) {
@@ -81,6 +82,9 @@ class App {
                     app.exibirTodosPerfis();
                     break;
                 case "15":
+                    app.exibirHashtagMaisPopular();
+                    break;
+                case "16":
                     app.excluirPostagem();
                     break;
             }
@@ -163,7 +167,7 @@ class App {
             pos.qtdCurtidas +  '\n Descurtidas: ' + pos.qtdDescurtidas;
 
             if (pos instanceof PostagemAvancada){
-                postagemstring += '\n Hashtag: ' + pos.hashtags;
+                postagemstring += '\n Hashtag: ' + pos.hashtags + '\n Vizualizações Restantes: ' + pos.vizualizacoesRest;
             }
             console.log(postagemstring);
         }
@@ -207,9 +211,9 @@ class App {
          console.log(rs.exibirPostagensPorHashtag(hashtag));
     }
 
-    exibirHashtagsMaisPopulares(){
-        console.log('----- HASHTAGS MAIS POPULARES -----\n')
-        console.log(rs.exibirHashtagsMaisPopulares());
+    exibirHashtagMaisPopular(){
+        console.log('----- HASHTAG MAIS POPULAR -----\n')
+        console.log(rs.hashtagMaisPopular());
     }
 
     exibirCurtidasEDescurtidas(){
@@ -291,8 +295,19 @@ class App {
                 let perfil_id = array[5];
                 
                 perfil = rs.consultarPerfilPorId(perfil_id);
-                let postagem = new Postagem(id, texto, qtdCurtidas, qtdDescurtidas, data, perfil);
-                rs.incluirPostagem(postagem);
+
+                if (array[6] != undefined){
+                    let hashtag = array[6];
+                    let vizrest = parseInt(array[7]);
+                    let postagem = new PostagemAvancada(id, texto, qtdCurtidas, qtdDescurtidas, data, perfil, hashtag,vizrest);
+                    rs.incluirPostagem(postagem);
+                } else {
+                    let postagem = new Postagem(id, texto, qtdCurtidas, qtdDescurtidas, data, perfil);
+                    rs.incluirPostagem(postagem);
+                }
+                
+                
+               
             } else {
                 console.log('POSTAGENS CARREGADAS: ' + usuario);
                 break

@@ -1,3 +1,6 @@
-1;TESTE;0;0;Mon Nov 06 2023 18:01:38 GMT-0300 (Horário Padrão de Brasília);1
-2;POSTAGEM AVANCADA;2;0;Mon Nov 06 2023 18:07:13 GMT-0300 (Horário Padrão de Brasília);2
-3;HASHTAG;0;0;Mon Nov 06 2023 18:10:29 GMT-0300 (Horário Padrão de Brasília);2
+1;TESTE;1;0;Mon Nov 06 2023 18:01:38 GMT-0300 (Horário Padrão de Brasília);1;undefined;NaN
+2;POSTAGEM AVANCADA;2;0;Mon Nov 06 2023 18:07:13 GMT-0300 (Horário Padrão de Brasília);2;undefined;NaN
+3;HASHTAG;0;0;Mon Nov 06 2023 18:10:29 GMT-0300 (Horário Padrão de Brasília);2;ifpi;8
+4;TESTE;0;0;Mon Nov 06 2023 19:23:01 GMT-0300 (Horário Padrão de Brasília);1;ifpi;8
+5;TESTE HASHTAG;0;0;Mon Nov 06 2023 19:24:22 GMT-0300 (Horário Padrão de Brasília);1;ifpi;1
+6;TESTE;0;0;Mon Nov 06 2023 19:25:50 GMT-0300 (Horário Padrão de Brasília);1;tag;20

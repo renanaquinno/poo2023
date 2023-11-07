@@ -54,6 +54,24 @@ class RepositorioDePostagens {
         }
         return postagens;
     }
+    hashtagPopular() {
+        let hashtags = [];
+        for (let postagem of this._postagens) {
+            if (postagem instanceof PostagemAvancada_1.PostagemAvancada) {
+                if (postagem.hashtags) {
+                    hashtags.push(postagem.hashtags);
+                }
+            }
+        }
+        let max = { item: 0, count: 0 };
+        for (let i = 0; i < hashtags.length; i++) {
+            let arrOccurences = hashtags.filter(item => { return item === hashtags[i]; }).length;
+            if (arrOccurences > max.count) {
+                max = { item: hashtags[i], count: hashtags.filter(item => { return item === hashtags[i]; }).length };
+            }
+        }
+        return max.item;
+    }
     consultar(id, texto, hashtag, perfil) {
         let postagens = [];
         for (let postagem of this._postagens) {

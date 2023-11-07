@@ -146,11 +146,14 @@ class RedeSocial {
     exibirTodosPerfis() {
         return this._repositorioPerfis.todosPerfis;
     }
+    hashtagMaisPopular() {
+        return this._repositorioPosts.hashtagPopular();
+    }
     atualizarBanco() {
         let listaPostagens = '';
         let postagens = this._repositorioPosts.todasPostagens;
         for (let i = 0; i < postagens.length; i++) {
-            listaPostagens = listaPostagens + postagens[i].id + ';' + postagens[i].texto + ';' + postagens[i].qtdCurtidas + ';' + postagens[i].qtdDescurtidas + ';' + postagens[i].data + ';' + postagens[i].perfil.id + '\n';
+            listaPostagens = listaPostagens + postagens[i].id + ';' + postagens[i].texto + ';' + postagens[i].qtdCurtidas + ';' + postagens[i].qtdDescurtidas + ';' + postagens[i].data + ';' + postagens[i].perfil.id + ';' + postagens[i].hashtags + ';' + postagens[i].vizualizacoesRest + '\n';
         }
         var bdPostagens = require('fs');
         bdPostagens.writeFile('postagens.txt', listaPostagens, function (err) {

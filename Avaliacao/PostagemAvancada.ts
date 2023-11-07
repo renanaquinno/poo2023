@@ -3,7 +3,7 @@ import { Perfil } from "./Perfil";
 import { Hashtag } from "./Hashtag";
 class PostagemAvancada extends Postagem {
     private _hashtags: string;
-    private _visualizacoesRestantes: number = 100;
+    private _visualizacoesRestantes: number = 1;
 
     constructor(id: string, texto: string, qtdCurtidas: number, qtdDescurtidas: number, data: Date, perfil: Perfil, _hashtags: string, visualizacoesRestantes: number){
         super(id, texto, qtdCurtidas, qtdDescurtidas, data, perfil);
@@ -15,6 +15,9 @@ class PostagemAvancada extends Postagem {
         return this._hashtags;
     }
 
+    get vizualizacoesRest(){
+        return this._visualizacoesRestantes;
+    }
 
     decrementarVisualizacoes(): void {
         this._visualizacoesRestantes -= 1;

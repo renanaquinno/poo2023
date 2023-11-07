@@ -6,7 +6,6 @@ class Postagem {
     private _qtdDescurtidas: number;
     private _data: Date;
     private _perfil: Perfil;
-
     constructor(id: string, texto: string, qtdCurtidas: number, qtdDescurtidas: number, data: Date, perfil: Perfil){
         this._id = id;
         this._texto = texto;

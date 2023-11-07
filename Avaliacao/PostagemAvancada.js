@@ -5,12 +5,15 @@ const Postagem_1 = require("./Postagem");
 class PostagemAvancada extends Postagem_1.Postagem {
     constructor(id, texto, qtdCurtidas, qtdDescurtidas, data, perfil, _hashtags, visualizacoesRestantes) {
         super(id, texto, qtdCurtidas, qtdDescurtidas, data, perfil);
-        this._visualizacoesRestantes = 100;
+        this._visualizacoesRestantes = 1;
         this._hashtags = _hashtags;
         this._visualizacoesRestantes = visualizacoesRestantes;
     }
     get hashtags() {
         return this._hashtags;
+    }
+    get vizualizacoesRest() {
+        return this._visualizacoesRestantes;
     }
     decrementarVisualizacoes() {
         this._visualizacoesRestantes -= 1;

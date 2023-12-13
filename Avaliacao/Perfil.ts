@@ -30,6 +30,7 @@ class Perfil {
 }
 
 interface IRepositorioDePerfis {
+    todosPerfis: any;
     inserir(perfil: Perfil): void;
     consultar(id?: string, nome?: string, email?: string): Perfil;
 }

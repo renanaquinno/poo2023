@@ -38,6 +38,15 @@ class PostagemAvancada extends Postagem {
 }
 
 interface IRepositorioDePostagens {
+    todasPostagens: any;
+    hashtagPopular(): any;
+    todosPost(): string[];
+    excluirPostagem(id: string): any;
+    exibirPostagemMaisRecente(): PostagemAvancada | Postagem | null;
+    exibirCurtidasEDescurtidas(id: string): string;
+    consultarPopulares(): (PostagemAvancada | Postagem)[] | null;
+    consultarporhastag(hashtag: string): any;
+    consultarPorId(id: string): PostagemAvancada | Postagem | null;
     inserir(postagem: Postagem): void;
     consultar(id?: string, texto?: string, hashtag?: string, perfil?: Perfil): PostagemAvancada []
 }

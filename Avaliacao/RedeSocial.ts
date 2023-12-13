@@ -1,7 +1,7 @@
 import { RepositorioDePostagens } from "./RepositorioDePostagens";
 import { RepositorioDePerfis } from "./RepositorioDePerfis";
-import { IRepositorioDePostagens, Postagem } from "./Postagem";
-import { PostagemAvancada } from "./PostagemAvancada";
+import { Postagem } from "./Postagem";
+import { IRepositorioDePostagens, PostagemAvancada } from "./PostagemAvancada";
 import { IRepositorioDePerfis, Perfil } from "./Perfil";
 import { Hashtag } from "./Hashtag";
 import { RepositorioDeHastags } from "./RepositorioHashtags";
@@ -161,7 +161,7 @@ class RedeSocial {
     }
 
     exibirPostagemMaisCurtida(){
-        return this._repositorioPosts.exibirPostagemMaisCurtida();
+        return this._repositorioPosts.exibirPostagemMaisRecente();
     }
 
     excluirPostagem(id: string){

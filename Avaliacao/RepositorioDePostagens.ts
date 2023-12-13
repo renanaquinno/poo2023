@@ -1,5 +1,5 @@
-import { PostagemAvancada } from "./PostagemAvancada";
-import { IRepositorioDePostagens, Postagem } from "./Postagem";
+import { IRepositorioDePostagens, PostagemAvancada } from "./PostagemAvancada";
+import { Postagem } from "./Postagem";
 import { Perfil } from "./Perfil";
 import { stringify } from "querystring";
 import { AplicacaoError, PostagemNaoExistenteError } from "./Error";
@@ -91,7 +91,7 @@ class RepositorioDePostagens implements IRepositorioDePostagens {
         for (let i = 0; i < hashtags.length; i++) {
             let arrOccurences = hashtags.filter(item => { return item === hashtags[i] }).length;
             if (arrOccurences > max.count) {
-                max = { item: hashtags[i], count: hashtags.filter(item => { return item === hashtags[i] }).length };
+                max = {item: hashtags[i], count: hashtags.filter(item => { return item === hashtags[i] }).length };
             }
         }
 
@@ -152,7 +152,7 @@ class RepositorioDePostagens implements IRepositorioDePostagens {
         return postsPopulares;
     }
 
-    exibirCurtidasEDescurtidas(id: string): string {
+    exibirCurtidasEDescurtidas(id: string): string | undefined {
         let indiceBuscado = this.consultarIndicePorId(id);
         try {
             if (indiceBuscado != -1) {

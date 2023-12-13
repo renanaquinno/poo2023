@@ -37,4 +37,9 @@ class PostagemAvancada extends Postagem {
     }
 }
 
-export {PostagemAvancada}
+interface IRepositorioDePostagens {
+    inserir(postagem: Postagem): void;
+    consultar(id?: string, texto?: string, hashtag?: string, perfil?: Perfil): PostagemAvancada []
+}
+
+export {PostagemAvancada, IRepositorioDePostagens}

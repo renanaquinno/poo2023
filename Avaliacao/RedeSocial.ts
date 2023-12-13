@@ -1,34 +1,35 @@
 import { RepositorioDePostagens } from "./RepositorioDePostagens";
 import { RepositorioDePerfis } from "./RepositorioDePerfis";
-import { Postagem } from "./Postagem";
+import { IRepositorioDePostagens, Postagem } from "./Postagem";
 import { PostagemAvancada } from "./PostagemAvancada";
-import { Perfil } from "./Perfil";
+import { IRepositorioDePerfis, Perfil } from "./Perfil";
 import { Hashtag } from "./Hashtag";
 import { RepositorioDeHastags } from "./RepositorioHashtags";
+import { PerfilExistenteError, PostagemExistenteError, PostagemNaoExistenteError } from "./Error";
 
 class RedeSocial {
-    private _repositorioPerfis: RepositorioDePerfis;
-    private _repositorioPosts: RepositorioDePostagens;
+    private _repositorioPerfis: IRepositorioDePerfis;
+    private _repositorioPosts: IRepositorioDePostagens;
     private _repositorioHashtag: RepositorioDeHastags;
 
-    constructor (_repositorioPerfis: RepositorioDePerfis, _repositorioPosts: RepositorioDePostagens, _repositorioHashtags: RepositorioDeHastags){
-        this._repositorioPerfis = new RepositorioDePerfis();
-        this._repositorioPosts = new RepositorioDePostagens();
-        this._repositorioHashtag = new RepositorioDeHastags();
+    constructor (repositorioPerfis: IRepositorioDePerfis, repositorioPosts: IRepositorioDePostagens, repositorioHashtags: RepositorioDeHastags){
+        this._repositorioPerfis = repositorioPerfis;
+        this._repositorioPosts = repositorioPosts;
+        this._repositorioHashtag = repositorioHashtags;
     }
 
     incluirPerfil(perfil: Perfil) {
         if(!(this.existePerfil(perfil))){
-            this._repositorioPerfis.adicionar(perfil);
+            this._repositorioPerfis.inserir(perfil);
             console.log("Adicionado com Sucesso!");
         } else {
-            console.log("Erro ao Adicionar, ID ja existente!");
+            throw new PerfilExistenteError("Erro ao Adicionar, ID ja existente!");
         }
     }
 
-    existePerfil(perfilBuscado: Perfil): boolean{
     
-        if (this._repositorioPerfis.consultarPerfil(perfilBuscado.id, perfilBuscado.nome, perfilBuscado.email)){
+    existePerfil(perfilBuscado: Perfil): boolean{
+        if (this._repositorioPerfis.consultar(perfilBuscado.id, perfilBuscado.nome, perfilBuscado.email)){
             return true;
         }
         return false;
@@ -73,10 +74,10 @@ class RedeSocial {
 
     incluirPostagem(postagem: Postagem | PostagemAvancada): void {
         if (!this._repositorioPosts.consultar(postagem.id)){ 
-            this._repositorioPosts.adicionar(postagem);
-            console.log("Postagen Adicionada!");
+            this._repositorioPosts.inserir(postagem);
+            console.log("Postagem Adicionada!");
         } else {
-            console.log("Postagen já existe!");
+            throw new PostagemExistenteError("Erro ao Adicionar, Postagem ja existente!");
         }
     }
 
@@ -94,7 +95,7 @@ class RedeSocial {
         if (postProcurado != null){
             postProcurado.curtir();
         } else {
-            console.log("Postagem Não Existe");
+            throw new PostagemNaoExistenteError("Postagem Não Existente!");
         }
     }
 
@@ -103,7 +104,7 @@ class RedeSocial {
         if (postProcurado != null){
             postProcurado.descurtir();
         } else {
-            console.log("Postagem Não Existe");
+            throw new PostagemNaoExistenteError("Postagem Não Existente!");
         }
     }
 

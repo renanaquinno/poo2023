@@ -1,12 +1,13 @@
 import { PostagemAvancada } from "./PostagemAvancada";
-import { Postagem } from "./Postagem";
+import { IRepositorioDePostagens, Postagem } from "./Postagem";
 import { Perfil } from "./Perfil";
 import { stringify } from "querystring";
-class RepositorioDePostagens {
-    private _postagens: (Postagem | PostagemAvancada)[] = [];
-    
+import { AplicacaoError, PostagemNaoExistenteError } from "./Error";
+class RepositorioDePostagens implements IRepositorioDePostagens {
+    private _postagens: PostagemAvancada[] = [];
 
-    constructor(_postagens: Postagem | PostagemAvancada[]) {
+
+    constructor(_postagens: PostagemAvancada[]) {
         this._postagens = [];
     }
 
@@ -18,39 +19,53 @@ class RepositorioDePostagens {
         return this._postagens;
     }
 
-    todosPost(): string[]{
+    todosPost(): string[] {
         let post = [];
         let string = '';
-        for (let p of this._postagens){
+        for (let p of this._postagens) {
             string = 'ID: ' + p.id + '; Texto: ' + p.texto;
             post.push(string);
         }
         return post;
     }
 
-    adicionar(postagem: Postagem | PostagemAvancada) {
-        if (this._postagens.includes(postagem)) {
-            return false;
-        } else {
-            this._postagens.push(postagem);
-            let perfil = postagem.perfil;
-            perfil.postagens.push(postagem);
-            return true;
+    inserir(postagem: PostagemAvancada) {
+        try {
+            if (this._postagens.includes(postagem)) {
+                return false;
+            } else {
+                this._postagens.push(postagem);
+                let perfil = postagem.perfil;
+                perfil.postagens.push(postagem);
+                return true;
+            }
+        } catch (e: any) {
+            if (e instanceof AplicacaoError) {
+                console.log(e.name);
+                console.log(e.message);
+            }
         }
     }
 
-    remover(postagem: Postagem | PostagemAvancada): void {
-        if (this._postagens.includes(postagem)) {
-            let indiceBuscado = this.consultarIndicePorId(postagem.id);
 
-            if (indiceBuscado != -1) {
-                this._postagens.slice(indiceBuscado, 1);
+    remover(postagem: PostagemAvancada): void {
+        try {
+            if (this._postagens.includes(postagem)) {
+                let indiceBuscado = this.consultarIndicePorId(postagem.id);
+                if (indiceBuscado != -1) {
+                    this._postagens.slice(indiceBuscado, 1);
+                }
+            }
+        } catch (e: any) {
+            if (e instanceof AplicacaoError) {
+                console.log(e.name);
+                console.log(e.message);
             }
         }
     }
 
     consultarporhastag(hashtag: string): PostagemAvancada[] {
-        let postagens: (PostagemAvancada)[] = [];
+        let postagens: PostagemAvancada[] = [];
         for (let postagem of this._postagens) {
             if (postagem instanceof PostagemAvancada) {
                 if (postagem.hashtags == hashtag) {
@@ -62,7 +77,7 @@ class RepositorioDePostagens {
         return postagens;
     }
 
-    hashtagPopular(){
+    hashtagPopular() {
         let hashtags = [];
         for (let postagem of this._postagens) {
             if (postagem instanceof PostagemAvancada) {
@@ -72,19 +87,19 @@ class RepositorioDePostagens {
             }
         }
 
-        let max = {item: 0, count: 0};
+        let max = { item: 0, count: 0 };
         for (let i = 0; i < hashtags.length; i++) {
             let arrOccurences = hashtags.filter(item => { return item === hashtags[i] }).length;
             if (arrOccurences > max.count) {
-                max = {item: hashtags[i], count: hashtags.filter(item => { return item === hashtags[i] }).length };
+                max = { item: hashtags[i], count: hashtags.filter(item => { return item === hashtags[i] }).length };
             }
         }
 
         return max.item;
     }
 
-    consultar(id?: string, texto?: string, hashtag?: string, perfil?: Perfil): (Postagem | PostagemAvancada)[] {
-        let postagens: (PostagemAvancada | Postagem)[] = [];
+    consultar(id?: string, texto?: string, hashtag?: string, perfil?: Perfil): PostagemAvancada[] | null {
+        let postagens: PostagemAvancada[] = [];
         for (let postagem of this._postagens) {
             if (postagem instanceof Postagem) {
                 if (postagem.id == id || postagem.texto == texto || postagem.perfil == perfil) {
@@ -100,10 +115,10 @@ class RepositorioDePostagens {
             }
         }
 
-        return postagens.length > 0 ? postagens : null;
+        return postagens.length > 0 ? postagens : null
     }
 
-    consultarPorId(id: string): Postagem | PostagemAvancada | null {
+    consultarPorId(id: string): PostagemAvancada | null {
         for (let postagem of this._postagens) {
             if (postagem.id == id) {
                 return postagem;
@@ -125,8 +140,8 @@ class RepositorioDePostagens {
         return indiceBuscado;
     }
 
-    consultarPopulares(): (Postagem | PostagemAvancada)[] | null {
-        let postsPopulares: (Postagem | PostagemAvancada)[] = [];
+    consultarPopulares(): PostagemAvancada[] | null {
+        let postsPopulares: PostagemAvancada[] = [];
 
         for (let post of this._postagens) {
             if (post.ehPopular()) {
@@ -139,28 +154,41 @@ class RepositorioDePostagens {
 
     exibirCurtidasEDescurtidas(id: string): string {
         let indiceBuscado = this.consultarIndicePorId(id);
-
-        if (indiceBuscado != -1) {
-            if (this._postagens[indiceBuscado] != null) {
-                return `Curtidas = ${this._postagens[indiceBuscado].qtdCurtidas}\n Descurtidas ${this._postagens[indiceBuscado].qtdDescurtidas}`;
+        try {
+            if (indiceBuscado != -1) {
+                if (this._postagens[indiceBuscado] != null) {
+                    return `Curtidas = ${this._postagens[indiceBuscado].qtdCurtidas}\n Descurtidas ${this._postagens[indiceBuscado].qtdDescurtidas}`;
+                }
+            }
+        } catch (e: any) {
+            if (e instanceof AplicacaoError) {
+                console.log(e.name);
+                console.log(e.message);
+                throw new PostagemNaoExistenteError("Postagem Não Existente!");
             }
         }
-        return `POSTAGEM NÃO LOCALIZADA`
     }
 
-    exibirPostagemMaisRecente(): Postagem | PostagemAvancada | null {
-        if (this._postagens.length === 0) {
-            return null;
-        }
+    exibirPostagemMaisRecente(): PostagemAvancada | undefined {
 
-        let postagemMaisRecente = this._postagens[0];
+        try {
+            if (this._postagens.length === 0) {
+                throw new PostagemNaoExistenteError("Postagens Não Existente!");
+            }
+            let postagemMaisRecente = this._postagens[0];
 
-        for (let postagem of this._postagens) {
-            if (postagem.data > postagemMaisRecente.data) {
-                postagemMaisRecente = postagem;
+            for (let postagem of this._postagens) {
+                if (postagem.data > postagemMaisRecente.data) {
+                    postagemMaisRecente = postagem;
+                }
+            }
+            return postagemMaisRecente;
+        } catch (e: any) {
+            if (e instanceof AplicacaoError) {
+                console.log(e.name);
+                console.log(e.message);
             }
         }
-        return postagemMaisRecente;
     }
 
     exibirPostagemMaisCurtida(): Postagem {
@@ -177,16 +205,21 @@ class RepositorioDePostagens {
     }
 
     excluirPostagem(id: string): void {
-        let postagemBuscada!: Postagem;
-
-        for (let postagem of this._postagens) {
-            if (postagem.id == id) {
-                postagemBuscada = postagem;
-                break;
+        try {
+            let postagemBuscada!: Postagem;
+            for (let postagem of this._postagens) {
+                if (postagem.id == id) {
+                    postagemBuscada = postagem;
+                    break;
+                }
+            }
+            this._postagens.pop();
+        } catch (e: any) {
+            if (e instanceof AplicacaoError) {
+                console.log(e.name);
+                console.log(e.message);
             }
         }
-
-        this._postagens.pop();
     }
 
 

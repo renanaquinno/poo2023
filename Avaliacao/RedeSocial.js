@@ -1,109 +1,109 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 exports.RedeSocial = void 0;
-const RepositorioDePostagens_1 = require("./RepositorioDePostagens");
-const RepositorioDePerfis_1 = require("./RepositorioDePerfis");
-const Postagem_1 = require("./Postagem");
-const PostagemAvancada_1 = require("./PostagemAvancada");
-const RepositorioHashtags_1 = require("./RepositorioHashtags");
-class RedeSocial {
-    constructor(_repositorioPerfis, _repositorioPosts, _repositorioHashtags) {
-        this._repositorioPerfis = new RepositorioDePerfis_1.RepositorioDePerfis();
-        this._repositorioPosts = new RepositorioDePostagens_1.RepositorioDePostagens();
-        this._repositorioHashtag = new RepositorioHashtags_1.RepositorioDeHastags();
+var Postagem_1 = require("./Postagem");
+var PostagemAvancada_1 = require("./PostagemAvancada");
+var Error_1 = require("./Error");
+var RedeSocial = /** @class */ (function () {
+    function RedeSocial(repositorioPerfis, repositorioPosts, repositorioHashtags) {
+        this._repositorioPerfis = repositorioPerfis;
+        this._repositorioPosts = repositorioPosts;
+        this._repositorioHashtag = repositorioHashtags;
     }
-    incluirPerfil(perfil) {
+    RedeSocial.prototype.incluirPerfil = function (perfil) {
         if (!(this.existePerfil(perfil))) {
-            this._repositorioPerfis.adicionar(perfil);
+            this._repositorioPerfis.inserir(perfil);
             console.log("Adicionado com Sucesso!");
         }
         else {
-            console.log("Erro ao Adicionar, ID ja existente!");
+            throw new Error_1.PerfilExistenteError("Erro ao Adicionar, ID ja existente!");
         }
-    }
-    existePerfil(perfilBuscado) {
-        if (this._repositorioPerfis.consultarPerfil(perfilBuscado.id, perfilBuscado.nome, perfilBuscado.email)) {
+    };
+    RedeSocial.prototype.existePerfil = function (perfilBuscado) {
+        this._repositorioPerfis.consultar(perfilBuscado.id, perfilBuscado.nome, perfilBuscado.email);
+        if (this._repositorioPerfis.consultar(perfilBuscado.id, perfilBuscado.nome, perfilBuscado.email)) {
             return true;
         }
         return false;
-    }
-    consultarPerfil(id, nome, email) {
-        let perfil_procurado;
-        for (let i = 0; i < this._repositorioPerfis.todosPerfis.length; i++) {
+    };
+    RedeSocial.prototype.consultarPerfil = function (id, nome, email) {
+        var perfil_procurado;
+        for (var i = 0; i < this._repositorioPerfis.todosPerfis.length; i++) {
             if (this._repositorioPerfis.todosPerfis[i].id == id || this._repositorioPerfis.todosPerfis[i].nome == nome || this._repositorioPerfis.todosPerfis[i].email == email) {
                 perfil_procurado = this._repositorioPerfis.todosPerfis[i];
             }
         }
         return perfil_procurado;
-    }
-    consultarPerfilPorId(id) {
-        let perfil_procurado;
-        for (let i = 0; i < this._repositorioPerfis.todosPerfis.length; i++) {
+    };
+    RedeSocial.prototype.consultarPerfilPorId = function (id) {
+        var perfil_procurado;
+        for (var i = 0; i < this._repositorioPerfis.todosPerfis.length; i++) {
             if (this._repositorioPerfis.todosPerfis[i].id == id) {
                 perfil_procurado = this._repositorioPerfis.todosPerfis[i];
             }
         }
         return perfil_procurado;
-    }
-    consultarHashTag(tag) {
-        let tag_procurado = this._repositorioHashtag.consultarHashtag(tag);
+    };
+    RedeSocial.prototype.consultarHashTag = function (tag) {
+        var tag_procurado = this._repositorioHashtag.consultarHashtag(tag);
         return tag_procurado;
-    }
-    incluirHashtag(tag) {
+    };
+    RedeSocial.prototype.incluirHashtag = function (tag) {
         this._repositorioHashtag.adicionar(tag);
-    }
-    existePostagem(postagem) {
+    };
+    RedeSocial.prototype.existePostagem = function (postagem) {
         if (this._repositorioPosts.consultar(postagem.id)) {
             return true;
         }
         return false;
-    }
-    incluirPostagem(postagem) {
+    };
+    RedeSocial.prototype.incluirPostagem = function (postagem) {
         if (!this._repositorioPosts.consultar(postagem.id)) {
-            this._repositorioPosts.adicionar(postagem);
-            console.log("Postagen Adicionada!");
+            this._repositorioPosts.inserir(postagem);
+            console.log("Postagem Adicionada!");
         }
         else {
-            console.log("Postagen já existe!");
+            throw new Error_1.PostagemExistenteError("Erro ao Adicionar, Postagem ja existente!");
         }
-    }
-    consultarPostagens(id, texto, hashtag, perfil) {
+    };
+    RedeSocial.prototype.consultarPostagens = function (id, texto, hashtag, perfil) {
         return this._repositorioPosts.consultar(id, texto, hashtag, perfil);
-    }
-    consultarPostagemPorId(id) {
+    };
+    RedeSocial.prototype.consultarPostagemPorId = function (id) {
         return this._repositorioPosts.consultarPorId(id);
-    }
-    curtir(id) {
-        let postProcurado = this.consultarPostagemPorId(id);
+    };
+    RedeSocial.prototype.curtir = function (id) {
+        var postProcurado = this.consultarPostagemPorId(id);
         if (postProcurado != null) {
             postProcurado.curtir();
         }
         else {
-            console.log("Postagem Não Existe");
+            throw new Error_1.PostagemNaoExistenteError("Postagem Não Existente!");
         }
-    }
-    descurtir(id) {
-        let postProcurado = this.consultarPostagemPorId(id);
+    };
+    RedeSocial.prototype.descurtir = function (id) {
+        var postProcurado = this.consultarPostagemPorId(id);
         if (postProcurado != null) {
             postProcurado.descurtir();
         }
         else {
-            console.log("Postagem Não Existe");
+            throw new Error_1.PostagemNaoExistenteError("Postagem Não Existente!");
         }
-    }
-    decrementarVisualizacoes(postagem) {
-        let postProcurado = this.consultarPostagemPorId(postagem.id);
+    };
+    RedeSocial.prototype.decrementarVisualizacoes = function (postagem) {
+        var postProcurado = this.consultarPostagemPorId(postagem.id);
         if (postProcurado != null) {
             if (postProcurado instanceof PostagemAvancada_1.PostagemAvancada) {
                 postProcurado.decrementarVisualizacoes();
             }
         }
-    }
-    exibirPostagensPorPerfil(id) {
-        let postagens = this._repositorioPosts.consultar(id);
-        let postagensValidas = [];
+    };
+    RedeSocial.prototype.exibirPostagensPorPerfil = function (id) {
+        var postagens = this._repositorioPosts.consultar(id);
+        var postagensValidas = [];
         if (postagens != null) {
-            for (let post of postagens) {
+            for (var _i = 0, postagens_1 = postagens; _i < postagens_1.length; _i++) {
+                var post = postagens_1[_i];
                 if (post instanceof PostagemAvancada_1.PostagemAvancada) {
                     post.decrementarVisualizacoes();
                     if (post.visualizacoesRestantes() !== 0) {
@@ -117,42 +117,42 @@ class RedeSocial {
             return postagensValidas;
         }
         return null;
-    }
-    exibirPostagensPorHashtag(hashtag) {
-        let postagens = this._repositorioPosts.consultarporhastag(hashtag);
+    };
+    RedeSocial.prototype.exibirPostagensPorHashtag = function (hashtag) {
+        var postagens = this._repositorioPosts.consultarporhastag(hashtag);
         return postagens;
-    }
-    postagensPopulares() {
+    };
+    RedeSocial.prototype.postagensPopulares = function () {
         return this._repositorioPosts.consultarPopulares();
-    }
-    exibirHashtagsMaisPopulares() {
+    };
+    RedeSocial.prototype.exibirHashtagsMaisPopulares = function () {
         return this._repositorioHashtag.exibirToptagPopular();
-    }
-    exibirCurtidasEDescurtidas(id) {
+    };
+    RedeSocial.prototype.exibirCurtidasEDescurtidas = function (id) {
         return this._repositorioPosts.exibirCurtidasEDescurtidas(id);
-    }
-    exibirPostagemMaisRecente() {
+    };
+    RedeSocial.prototype.exibirPostagemMaisRecente = function () {
         return this._repositorioPosts.exibirPostagemMaisRecente();
-    }
-    exibirPostagemMaisCurtida() {
+    };
+    RedeSocial.prototype.exibirPostagemMaisCurtida = function () {
         return this._repositorioPosts.exibirPostagemMaisCurtida();
-    }
-    excluirPostagem(id) {
+    };
+    RedeSocial.prototype.excluirPostagem = function (id) {
         return this._repositorioPosts.excluirPostagem(id);
-    }
-    exibirTodasPostagens() {
+    };
+    RedeSocial.prototype.exibirTodasPostagens = function () {
         return this._repositorioPosts.todosPost();
-    }
-    exibirTodosPerfis() {
+    };
+    RedeSocial.prototype.exibirTodosPerfis = function () {
         return this._repositorioPerfis.todosPerfis;
-    }
-    hashtagMaisPopular() {
+    };
+    RedeSocial.prototype.hashtagMaisPopular = function () {
         return this._repositorioPosts.hashtagPopular();
-    }
-    atualizarBanco() {
-        let listaPostagens = '';
-        let postagens = this._repositorioPosts.todasPostagens;
-        for (let i = 0; i < postagens.length; i++) {
+    };
+    RedeSocial.prototype.atualizarBanco = function () {
+        var listaPostagens = '';
+        var postagens = this._repositorioPosts.todasPostagens;
+        for (var i = 0; i < postagens.length; i++) {
             listaPostagens = listaPostagens + postagens[i].id + ';' + postagens[i].texto + ';' + postagens[i].qtdCurtidas + ';' + postagens[i].qtdDescurtidas + ';' + postagens[i].data + ';' + postagens[i].perfil.id + ';' + postagens[i].hashtags + ';' + postagens[i].vizualizacoesRest + '\n';
         }
         var bdPostagens = require('fs');
@@ -160,9 +160,9 @@ class RedeSocial {
             if (err)
                 throw err;
         });
-        let listaPerfis = '';
-        let perfis = this._repositorioPerfis.todosPerfis;
-        for (let i = 0; i < perfis.length; i++) {
+        var listaPerfis = '';
+        var perfis = this._repositorioPerfis.todosPerfis;
+        for (var i = 0; i < perfis.length; i++) {
             listaPerfis = listaPerfis + perfis[i].id + ';' + perfis[i].nome + ';' + perfis[i].email + ';' + perfis[i].postagens + '\n';
         }
         var bdperfis = require('fs');
@@ -170,6 +170,7 @@ class RedeSocial {
             if (err)
                 throw err;
         });
-    }
-}
+    };
+    return RedeSocial;
+}());
 exports.RedeSocial = RedeSocial;

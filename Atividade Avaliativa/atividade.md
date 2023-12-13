@@ -40,3 +40,5 @@
 
 **11. Crie uma classe chamada AuditoriaInterna que tenha dois métodos que tenha um array de Tributaveis e os métodos:**
 * Resposta: código no arquivo q10.ts
+
+**12. Altere a aplicação feita sobre redes sociais para:**

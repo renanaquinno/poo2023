@@ -1,42 +1,48 @@
-import { Perfil } from "./Perfil";
+import { AplicacaoError, PerfilExistenteError } from "./Error";
+import { IRepositorioDePerfis, Perfil } from "./Perfil";
 
 
-class RepositorioDePerfis {
+class RepositorioDePerfis implements IRepositorioDePerfis {
     private _perfis: Perfil[] = [];
 
-    constructor(_perfis: Perfil[]){
-        this._perfis = [] ;
+    constructor(_perfis: Perfil[]) {
+        this._perfis = [];
     }
 
-    get todosPerfis (){
+    get todosPerfis() {
         return this._perfis;
     }
 
-    adicionar(perfil: Perfil) {
-        if (this._perfis.includes(perfil)) {
-            return false;
-        } else {
-            this._perfis.push(perfil);
-            return true;
+    inserir(perfil: Perfil): void {
+        try {
+            if (this._perfis.includes(perfil)) {
+                throw new PerfilExistenteError("Erro ao Adicionar, Perfil ja existente!");
+            } else {
+                this._perfis.push(perfil);
+            }
+        } catch (e: any) {
+            if (e instanceof AplicacaoError) {
+                console.log(e.name);
+                console.log(e.message);
+            }
         }
     }
 
-    consultarPerfil(id?: string, nome?: string, email?: string): Perfil {
+    consultar(id?: string, nome?: string, email?: string): Perfil {
         let perfilProcurado!: Perfil;
         for (let i = 0; i < this._perfis.length; i++) {
             if (this._perfis[i].id == id || this._perfis[i].nome == nome || this._perfis[i].email == email) {
                 perfilProcurado = this._perfis[i];
                 break;
-            }            
+            }
         }
-
         return perfilProcurado;
     }
 
-    get lengthPerfis(): number{
+    get lengthPerfis(): number {
         return this._perfis.length;
     }
 
 }
 
-export {RepositorioDePerfis}
+export { RepositorioDePerfis }

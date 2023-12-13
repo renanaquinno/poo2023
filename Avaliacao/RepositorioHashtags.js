@@ -1,15 +1,19 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 exports.RepositorioDeHastags = void 0;
-class RepositorioDeHastags {
-    constructor(_hashtag) {
+var RepositorioDeHastags = /** @class */ (function () {
+    function RepositorioDeHastags(_hashtag) {
         this._hashtag = [];
         this._hashtag = [];
     }
-    get todasHashtags() {
-        return this._hashtag;
-    }
-    adicionar(hashtag) {
+    Object.defineProperty(RepositorioDeHastags.prototype, "todasHashtags", {
+        get: function () {
+            return this._hashtag;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    RepositorioDeHastags.prototype.adicionar = function (hashtag) {
         if (this._hashtag.includes(hashtag)) {
             return false;
         }
@@ -17,18 +21,18 @@ class RepositorioDeHastags {
             this._hashtag.push(hashtag);
             return true;
         }
-    }
-    consultarHashtag(hashtag) {
-        let hashtagProcurada;
-        for (let i = 0; i < this._hashtag.length; i++) {
+    };
+    RepositorioDeHastags.prototype.consultarHashtag = function (hashtag) {
+        var hashtagProcurada;
+        for (var i = 0; i < this._hashtag.length; i++) {
             if (this._hashtag[i].hashtag == hashtag) {
                 hashtagProcurada = this._hashtag[i];
                 break;
             }
         }
         return hashtagProcurada;
-    }
-    exibirToptagPopular() {
+    };
+    RepositorioDeHastags.prototype.exibirToptagPopular = function () {
         return '#';
         // let hashtagMaisUsada = '';
         // let maior = 0;        
@@ -39,6 +43,7 @@ class RepositorioDeHastags {
         //     } 
         // }
         // return hashtagMaisUsada;
-    }
-}
+    };
+    return RepositorioDeHastags;
+}());
 exports.RepositorioDeHastags = RepositorioDeHastags;

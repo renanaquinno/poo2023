@@ -52,4 +52,6 @@ class Postagem {
     }
 }
 
+
+
 export {Postagem}

@@ -1,22 +1,22 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const RedeSocial_1 = require("./RedeSocial");
-const Perfil_1 = require("./Perfil");
-const Postagem_1 = require("./Postagem");
-const PostagemAvancada_1 = require("./PostagemAvancada");
-const Hashtag_1 = require("./Hashtag");
+exports.__esModule = true;
+var RedeSocial_1 = require("./RedeSocial");
+var Perfil_1 = require("./Perfil");
+var Postagem_1 = require("./Postagem");
+var PostagemAvancada_1 = require("./PostagemAvancada");
+var Hashtag_1 = require("./Hashtag");
 var input = require('prompt-sync')();
 var rs = new RedeSocial_1.RedeSocial();
-class App {
-    constructor(redeSocial) {
+var App = /** @class */ (function () {
+    function App(redeSocial) {
         this._redeSocial = redeSocial;
     }
-    init() {
+    App.prototype.init = function () {
         this.carregarDados();
-        let opcao = '';
+        var opcao = '';
         do {
-            console.log('\n-------------------------------------');
-            console.log('\nBem vindo a Rede Social de Postagens\nDigite uma opção:');
+            console.log('\n---------------    MENU    ---------------\n');
+            console.log('Bem vindo a Rede Social de Postagens\nDigite uma opção:');
             console.log('1 - Cadastrar Perfil\n' +
                 '2 - Pesquisar Perfil\n' +
                 '3 - Cadastrar Postagem\n' +
@@ -84,56 +84,58 @@ class App {
                 case "16":
                     app.excluirPostagem();
                     break;
+                default:
+                    console.log('Opção Invalida, Tente Novamente!');
             }
         } while (opcao != "0");
         rs.atualizarBanco();
         input('Loggout Realizado com Sucesso!!');
-    }
-    cadastrarPerfil() {
+    };
+    App.prototype.cadastrarPerfil = function () {
         console.log('----- CADASTRAR PERFIL -----\n');
-        let perfil;
-        let id = input('Digite o ID: ');
-        let nome = input('Digite o Nome: ').toLocaleUpperCase();
-        let email = input('Digite o Email: ').toLocaleUpperCase();
-        let postagens = [];
+        var perfil;
+        var id = input('Digite o ID: ');
+        var nome = input('Digite o Nome: ').toLocaleUpperCase();
+        var email = input('Digite o Email: ').toLocaleUpperCase();
+        var postagens = [];
         perfil = new Perfil_1.Perfil(id, nome, email, postagens);
         rs.incluirPerfil(perfil);
-    }
-    pesquisarPerfil() {
+    };
+    App.prototype.pesquisarPerfil = function () {
         console.log('----- PESQUISAR PERFIL -----\n');
-        let id = input('Digite o ID: ');
-        let nome = input('Digite o Nome: ').toLocaleUpperCase();
-        let email = input('Digite o Email: ').toLocaleUpperCase();
-        let perfil = rs.consultarPerfil(id, nome, email);
+        var id = input('Digite o ID: ');
+        var nome = input('Digite o Nome: ').toLocaleUpperCase();
+        var email = input('Digite o Email: ').toLocaleUpperCase();
+        var perfil = rs.consultarPerfil(id, nome, email);
         if (perfil) {
-            let perfilstring = 'ID: ' + perfil.id + '\nNome: ' + perfil.nome + '\nEmail: ' + perfil.email;
+            var perfilstring = 'ID: ' + perfil.id + '\nNome: ' + perfil.nome + '\nEmail: ' + perfil.email;
             console.log(perfilstring);
         }
         else {
             console.log('Perfil não existe!');
         }
-    }
-    cadastrarPostagem() {
+    };
+    App.prototype.cadastrarPostagem = function () {
         console.log('----- CADASTRAR POSTAGEM -----\n');
-        let postagem;
-        let id = input('Digite o ID: ');
-        let texto = input('Digite o Texto: ').toLocaleUpperCase();
-        let qtdCurtidas = 0;
-        let qtdDescurtidas = 0;
-        let data = new Date();
-        let id_perfil = input('Digite o Id do Perfil: ').toLocaleUpperCase();
-        let perfil = rs.consultarPerfilPorId(id_perfil);
+        var postagem;
+        var id = input('Digite o ID: ');
+        var texto = input('Digite o Texto: ').toLocaleUpperCase();
+        var qtdCurtidas = 0;
+        var qtdDescurtidas = 0;
+        var data = new Date();
+        var id_perfil = input('Digite o Id do Perfil: ').toLocaleUpperCase();
+        var perfil = rs.consultarPerfilPorId(id_perfil);
         if (perfil) {
-            let avancada = input('Digite 1 para Postagem Normal ou 2 Para Postagem Avançada: ');
+            var avancada = input('Digite 1 para Postagem Normal ou 2 Para Postagem Avançada: ');
             if (avancada == '1') {
                 postagem = new Postagem_1.Postagem(id, texto, qtdCurtidas, qtdDescurtidas, data, perfil);
                 rs.incluirPostagem(postagem);
             }
             else if (avancada == '2') {
-                let tag = input('Digite a Hashtag: ');
-                let hashtag = new Hashtag_1.Hashtag(tag, 0);
-                let visualizacoesRestantes = input('Vizualizações Restantes: ');
-                let postagemAvancada = new PostagemAvancada_1.PostagemAvancada(id, texto, qtdCurtidas, qtdDescurtidas, data, perfil, tag, visualizacoesRestantes);
+                var tag = input('Digite a Hashtag: ');
+                var hashtag = new Hashtag_1.Hashtag(tag, 0);
+                var visualizacoesRestantes = input('Vizualizações Restantes: ');
+                var postagemAvancada = new PostagemAvancada_1.PostagemAvancada(id, texto, qtdCurtidas, qtdDescurtidas, data, perfil, tag, visualizacoesRestantes);
                 rs.incluirHashtag(hashtag);
                 rs.incluirPostagem(postagemAvancada);
             }
@@ -144,17 +146,18 @@ class App {
         else {
             console.log('Perfil não existe!');
         }
-    }
-    pesquisarPostagem() {
+    };
+    App.prototype.pesquisarPostagem = function () {
         console.log('----- PESQUISAR POSTAGEM -----\n');
-        let id = input('Digite o ID: ');
-        let texto = input('Digite o Texto: ').toLocaleUpperCase();
-        let hashtag = input('Digite a Hashtag: ').toLocaleUpperCase();
-        let id_perfil = input('Digite o Id do Perfil: ').toLocaleUpperCase();
-        let perfil = rs.consultarPerfilPorId(id_perfil);
-        let postagem = rs.consultarPostagens(id, texto, hashtag, perfil);
-        for (let pos of postagem) {
-            let postagemstring = '\n -- POSTAGEM ENCONTRADA -- \nID: ' + pos.id + '\nTexto: ' + pos.texto +
+        var id = input('Digite o ID: ');
+        var texto = input('Digite o Texto: ').toLocaleUpperCase();
+        var hashtag = input('Digite a Hashtag: ').toLocaleUpperCase();
+        var id_perfil = input('Digite o Id do Perfil: ').toLocaleUpperCase();
+        var perfil = rs.consultarPerfilPorId(id_perfil);
+        var postagem = rs.consultarPostagens(id, texto, hashtag, perfil);
+        for (var _i = 0, postagem_1 = postagem; _i < postagem_1.length; _i++) {
+            var pos = postagem_1[_i];
+            var postagemstring = '\n -- POSTAGEM ENCONTRADA -- \nID: ' + pos.id + '\nTexto: ' + pos.texto +
                 '\nPerfil: ' + pos.perfil.nome + '\n Data Criação: ' + pos.data + '\n Curtidas: ' +
                 pos.qtdCurtidas + '\n Descurtidas: ' + pos.qtdDescurtidas;
             if (pos instanceof PostagemAvancada_1.PostagemAvancada) {
@@ -162,9 +165,9 @@ class App {
             }
             console.log(postagemstring);
         }
-    }
-    curtirDescurtir(opcao) {
-        let id = input('Informe ID da Postagem: ');
+    };
+    App.prototype.curtirDescurtir = function (opcao) {
+        var id = input('Informe ID da Postagem: ');
         if (opcao == 'curtir') {
             rs.curtir(id);
             console.log('----- POSTAGEM CURTIDA -----\n');
@@ -173,91 +176,91 @@ class App {
             rs.descurtir(id);
             console.log('----- POSTAGEM DESCURTIDA -----\n');
         }
-    }
-    exibirPostagensPerfil() {
+    };
+    App.prototype.exibirPostagensPerfil = function () {
         console.log('----- POSTAGEMS POR PERFIL -----\n');
-        let id = input('Informe ID do Perfil: ');
-        let perfil = rs.consultarPerfilPorId(id);
+        var id = input('Informe ID do Perfil: ');
+        var perfil = rs.consultarPerfilPorId(id);
         if (perfil) {
             console.log(rs.exibirPostagensPorPerfil(id));
         }
         else {
             console.log('Perfil não existe!');
         }
-    }
-    postagensPopulares() {
+    };
+    App.prototype.postagensPopulares = function () {
         console.log('----- POSTAGEMS POPULARES -----\n');
-        let post = rs.postagensPopulares();
+        var post = rs.postagensPopulares();
         if (post.length > 0) {
             console.log(rs.postagensPopulares());
         }
         else {
             console.log("Não Existem Postagens Populares");
         }
-    }
-    exibirPostagensPorHashtag() {
+    };
+    App.prototype.exibirPostagensPorHashtag = function () {
         console.log('----- POSTAGEMS POR HASHTAG -----\n');
-        let hashtag = input('Informe a Hashtag: ');
+        var hashtag = input('Informe a Hashtag: ');
         console.log(rs.exibirPostagensPorHashtag(hashtag));
-    }
-    exibirHashtagMaisPopular() {
+    };
+    App.prototype.exibirHashtagMaisPopular = function () {
         console.log('----- HASHTAG MAIS POPULAR -----\n');
         console.log(rs.hashtagMaisPopular());
-    }
-    exibirCurtidasEDescurtidas() {
+    };
+    App.prototype.exibirCurtidasEDescurtidas = function () {
         console.log('----- CURTIDAS E DESCURTIDAS -----\n');
-        let id = input('Informe ID da Postagem: ');
+        var id = input('Informe ID da Postagem: ');
         console.log(rs.exibirCurtidasEDescurtidas(id));
-    }
-    exibirPostagemMaisRecente() {
+    };
+    App.prototype.exibirPostagemMaisRecente = function () {
         console.log('----- POSTAGEM MAIS RECENTE -----\n');
         console.log(rs.exibirPostagemMaisRecente());
-    }
-    exibirPostagemMaisCurtida() {
+    };
+    App.prototype.exibirPostagemMaisCurtida = function () {
         console.log('----- POSTAGEM MAIS CURTIDA -----\n');
         console.log(rs.exibirPostagemMaisCurtida());
-    }
-    excluirPostagem() {
+    };
+    App.prototype.excluirPostagem = function () {
         console.log('----- EXCLUIR POSTAGEM -----\n');
-        let id = input('Informe ID da Postagem: ');
+        var id = input('Informe ID da Postagem: ');
         console.log(rs.excluirPostagem(id));
-    }
-    exibirTodasPostagens() {
+    };
+    App.prototype.exibirTodasPostagens = function () {
         console.log('----- EXIBIR TODAS AS POSTAGENS -----');
         console.log(rs.exibirTodasPostagens());
-    }
-    exibirTodosPerfis() {
+    };
+    App.prototype.exibirTodosPerfis = function () {
         console.log('----- EXIBIR TODOS PERFIS -----');
         console.log(rs.exibirTodosPerfis());
-    }
-    carregarDados() {
-        let LineReaderSync = require("line-reader-sync");
-        let perfil = new LineReaderSync("./perfis.txt");
+    };
+    App.prototype.carregarDados = function () {
+        var LineReaderSync = require("line-reader-sync");
+        var perfil = new LineReaderSync("./perfis.txt");
         while (true) {
-            let perfil_bd = perfil.readline();
+            var perfil_bd = perfil.readline();
             if (perfil_bd != null) {
-                let array = perfil_bd.split(";");
-                let id = array[0];
-                let nome = array[1].toUpperCase();
-                let email = array[2].toUpperCase();
-                let postagens = [];
-                let perfil = new Perfil_1.Perfil(id, nome, email, postagens);
-                rs.incluirPerfil(perfil);
-                console.log('Perfil Lido: ' + perfil.nome);
+                var array = perfil_bd.split(";");
+                var id = array[0];
+                var nome = array[1].toUpperCase();
+                var email = array[2].toUpperCase();
+                var postagens_1 = [];
+                var perfil_1 = new Perfil_1.Perfil(id, nome, email, postagens_1);
+                rs.incluirPerfil(perfil_1);
+                console.log('Perfil Lido: ' + perfil_1.nome);
             }
             else {
                 break;
             }
         }
         console.log("---- PERFIS CARREGADOS ----\n");
-        let fs = require('fs');
-        let postagens;
-        let usuario = '';
+        var fs = require('fs');
+        var postagens;
+        var usuario = '';
         try {
             postagens = new LineReaderSync("./postagens.txt");
         }
         catch (error) {
-            let conteudo = '';
+            var conteudo = '';
             fs.writeFile("./postagens.txt", conteudo, function (err) {
                 if (err)
                     throw err;
@@ -265,24 +268,24 @@ class App {
             postagens = new LineReaderSync("./postagens.txt");
         }
         while (true) {
-            let repositorioDePostagens = postagens.readline();
+            var repositorioDePostagens = postagens.readline();
             if (repositorioDePostagens != null) {
-                let array = repositorioDePostagens.split(";");
-                let id = array[0];
-                let texto = array[1].toUpperCase();
-                let qtdCurtidas = parseFloat(array[2]);
-                let qtdDescurtidas = parseFloat(array[3]);
-                let data = array[4];
-                let perfil_id = array[5];
+                var array = repositorioDePostagens.split(";");
+                var id = array[0];
+                var texto = array[1].toUpperCase();
+                var qtdCurtidas = parseFloat(array[2]);
+                var qtdDescurtidas = parseFloat(array[3]);
+                var data = array[4];
+                var perfil_id = array[5];
                 perfil = rs.consultarPerfilPorId(perfil_id);
                 if (array[6] != undefined) {
-                    let hashtag = array[6];
-                    let vizrest = parseInt(array[7]);
-                    let postagem = new PostagemAvancada_1.PostagemAvancada(id, texto, qtdCurtidas, qtdDescurtidas, data, perfil, hashtag, vizrest);
+                    var hashtag = array[6];
+                    var vizrest = parseInt(array[7]);
+                    var postagem = new PostagemAvancada_1.PostagemAvancada(id, texto, qtdCurtidas, qtdDescurtidas, data, perfil, hashtag, vizrest);
                     rs.incluirPostagem(postagem);
                 }
                 else {
-                    let postagem = new Postagem_1.Postagem(id, texto, qtdCurtidas, qtdDescurtidas, data, perfil);
+                    var postagem = new Postagem_1.Postagem(id, texto, qtdCurtidas, qtdDescurtidas, data, perfil);
                     rs.incluirPostagem(postagem);
                 }
             }
@@ -291,7 +294,8 @@ class App {
                 break;
             }
         }
-    }
-}
-let app = new App();
+    };
+    return App;
+}());
+var app = new App();
 app.init();

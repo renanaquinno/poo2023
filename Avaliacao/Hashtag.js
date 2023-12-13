@@ -1,23 +1,36 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 exports.Hashtag = void 0;
-class Hashtag {
-    constructor(_hashtag, _contador) {
+var Hashtag = /** @class */ (function () {
+    function Hashtag(_hashtag, _contador) {
         this._contador = 0;
         this._hashtag = _hashtag;
         this._contador = _contador;
     }
-    get hashtag() {
-        return this._hashtag;
-    }
-    get todasHashtags() {
-        return this._hashtag;
-    }
-    get contador() {
-        return this.contador;
-    }
-    atualizarContador() {
+    Object.defineProperty(Hashtag.prototype, "hashtag", {
+        get: function () {
+            return this._hashtag;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Hashtag.prototype, "todasHashtags", {
+        get: function () {
+            return this._hashtag;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Hashtag.prototype, "contador", {
+        get: function () {
+            return this.contador;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Hashtag.prototype.atualizarContador = function () {
         this._contador += 1;
-    }
-}
+    };
+    return Hashtag;
+}());
 exports.Hashtag = Hashtag;

@@ -1,35 +1,44 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 exports.RepositorioDePerfis = void 0;
-class RepositorioDePerfis {
-    constructor(_perfis) {
+var Error_1 = require("./Error");
+var RepositorioDePerfis = /** @class */ (function () {
+    function RepositorioDePerfis(_perfis) {
         this._perfis = [];
         this._perfis = [];
     }
-    get todosPerfis() {
-        return this._perfis;
-    }
-    adicionar(perfil) {
+    Object.defineProperty(RepositorioDePerfis.prototype, "todosPerfis", {
+        get: function () {
+            return this._perfis;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    RepositorioDePerfis.prototype.inserir = function (perfil) {
         if (this._perfis.includes(perfil)) {
-            return false;
+            throw new Error_1.PerfilExistenteError("Erro ao Adicionar, Perfil ja existente!");
         }
         else {
             this._perfis.push(perfil);
-            return true;
         }
-    }
-    consultarPerfil(id, nome, email) {
-        let perfilProcurado;
-        for (let i = 0; i < this._perfis.length; i++) {
+    };
+    RepositorioDePerfis.prototype.consultar = function (id, nome, email) {
+        var perfilProcurado;
+        for (var i = 0; i < this._perfis.length; i++) {
             if (this._perfis[i].id == id || this._perfis[i].nome == nome || this._perfis[i].email == email) {
                 perfilProcurado = this._perfis[i];
                 break;
             }
         }
         return perfilProcurado;
-    }
-    get lengthPerfis() {
-        return this._perfis.length;
-    }
-}
+    };
+    Object.defineProperty(RepositorioDePerfis.prototype, "lengthPerfis", {
+        get: function () {
+            return this._perfis.length;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    return RepositorioDePerfis;
+}());
 exports.RepositorioDePerfis = RepositorioDePerfis;

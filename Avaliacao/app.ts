@@ -3,6 +3,7 @@ import { Perfil } from "./Perfil";
 import { Postagem } from "./Postagem";
 import { PostagemAvancada } from "./PostagemAvancada";
 import { Hashtag } from "./Hashtag";
+import { AplicacaoError } from "./Error";
 
 var input = require('prompt-sync')();
 
@@ -18,8 +19,8 @@ class App {
         this.carregarDados();
         let opcao: String = '';
         do {
-            console.log('\n-------------------------------------');
-            console.log('\nBem vindo a Rede Social de Postagens\nDigite uma opção:');
+            console.log('\n---------------    MENU    ---------------\n');
+            console.log('Bem vindo a Rede Social de Postagens\nDigite uma opção:');
             console.log('1 - Cadastrar Perfil\n'+
             '2 - Pesquisar Perfil\n'+
             '3 - Cadastrar Postagem\n'+
@@ -87,6 +88,8 @@ class App {
                 case "16":
                     app.excluirPostagem();
                     break;
+                default:
+                    console.log('Opção Invalida, Tente Novamente!');
             }
         } while (opcao != "0");
         

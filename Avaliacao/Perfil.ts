@@ -29,4 +29,8 @@ class Perfil {
     }
 }
 
-export {Perfil}
+interface IRepositorioDePerfis {
+    inserir(perfil: Perfil): void;
+    consultar(id?: string, nome?: string, email?: string): Perfil;
+}
+export {Perfil, IRepositorioDePerfis}
